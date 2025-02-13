@@ -35,6 +35,7 @@ public class SalesPointFx2Application extends Application {
 				.filter(mc -> mc.getTipoMovimientoCaja() == 'A') // Filtramos según el tipo de movimiento
 				.ifPresentOrElse(mc -> {
 					// Si el tipo de movimiento es 'A', mostramos la ventana
+					mostrarPrincipal(primaryStage);
 
 				}, () -> {
 					// Si el tipo de movimiento no es 'A', realizamos una acción alternativa
@@ -45,13 +46,14 @@ public class SalesPointFx2Application extends Application {
 				});
 	}
 
-	public void mostrarPrincipal() {
+	public void mostrarPrincipal(Stage primaryStage) {
 
 	}
 
 	public void abiriCaja() {
+		SucursalService ss = context.getBean(SucursalService.class);
 		MovimientoCajaController mcc = context.getBean(MovimientoCajaController.class);
-		Parent abrirCaja = mcc.load();
+		Parent abrirCaja = mcc.load(ss.getSucursalActive().get().getNombreSucursal(), "Cerrar Caja");
 		Stage abrirCajaStage = new Stage();
 		abrirCajaStage.setScene(new Scene(abrirCaja, 600, 400));
 		abrirCajaStage.setResizable(false);
