@@ -12,12 +12,13 @@ import com.salespointfx2.www.config.SpringFXMLLoader;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.MenuItem;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
@@ -27,31 +28,28 @@ public class StarterController implements Initializable {
 	private SpringFXMLLoader springFXMLLoader;
 	@Autowired
 	private ConfigurableApplicationContext context;
-	
+
 	private Stage currentStage;
-	
 	@FXML
-	private BorderPane anchorPanePrincipal;
+	private BorderPane borderPanePrincipal;
 
 	@FXML
 	private MenuItem mItemAbrirCajon;
 
 	@FXML
-	private MenuItem mItemCerrarCaja;
+	private MenuItem mItemCerarCaja;
 
 	@FXML
-	private MenuItem mItemVenta;
+	private MenuItem mItemVentas;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 	}
+
 	@FXML
 	void venta(ActionEvent event) {
-		VentaController vc = context.getBean(VentaController.class);
-		/*Parent venta = vc.load();
-		anchorPanePrincipal.setCenter(venta);*/
 		loadView("/fxml/venta.fxml");
-		
+		VentaController vc = context.getBean(VentaController.class);
 	}
 
 	public Parent load() {
@@ -61,30 +59,31 @@ public class StarterController implements Initializable {
 			return root;
 		} catch (IOException e) {
 			Alert alert = new Alert(AlertType.ERROR);
-	        alert.setTitle("Error de Carga");
-	        alert.setHeaderText("No se pudo cargar la vista.");
-	        alert.setContentText("Hubo un error al cargar la vista. Por favor, intente de nuevo.");
-	        alert.showAndWait();
-	        e.printStackTrace();
-	        return null;
+			alert.setTitle("Error de Carga");
+			alert.setHeaderText("No se pudo cargar la vista.");
+			alert.setContentText("Hubo un error al cargar la vista. Por favor, intente de nuevo.");
+			alert.showAndWait();
+			e.printStackTrace();
+			return null;
 		}
 	}
 
 	public void loadView(String fxmlPath) {
-        try {
-            Parent view = springFXMLLoader.load(fxmlPath).load();
-            //BorderPane borderPane = (BorderPane) currentStage.getScene().getRoot();
-            anchorPanePrincipal.setCenter(view);
-        } catch (IOException e) {
-            e.printStackTrace();
-            showErrorDialog("Error al cargar la vista", e.getMessage());
-        }
-    }
+		try {
+			FXMLLoader fxml = springFXMLLoader.load(fxmlPath);
+			AnchorPane view = fxml.load();
+			// BorderPane borderPane = (BorderPane) currentStage.getScene().getRoot();
+			borderPanePrincipal.setCenter(view);
+		} catch (IOException e) {
+			e.printStackTrace();
+			showErrorDialog("Error al cargar la vista", e.getMessage());
+		}
+	}
 
-    private void showErrorDialog(String title, String message) {
-        Alert alert = new Alert(AlertType.ERROR);
-        alert.setTitle(title);
-        alert.setHeaderText(message);
-        alert.showAndWait();
-    }
+	private void showErrorDialog(String title, String message) {
+		Alert alert = new Alert(AlertType.ERROR);
+		alert.setTitle(title);
+		alert.setHeaderText(message);
+		alert.showAndWait();
+	}
 }

@@ -6,7 +6,6 @@ import jakarta.persistence.Basic;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -29,7 +28,7 @@ public class Categoria {
 	@Column(length = 20, nullable = false, unique = true)
 	private String nombreCategoria;
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "categoriaIdCategoria"/*, fetch = FetchType.EAGER*/)
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "categoriaIdCategoria"/* , fetch = FetchType.EAGER */)
 	private List<SucursalProducto> productoList;
 
 	public Categoria(String nombreCategoria) {
@@ -41,8 +40,4 @@ public class Categoria {
 		super();
 		this.idCategoria = idCategoria;
 	}
-
-	
-	
-
 }

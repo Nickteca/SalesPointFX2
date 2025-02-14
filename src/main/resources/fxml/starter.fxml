@@ -38,49 +38,51 @@
 <?import javafx.scene.input.KeyCodeCombination?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.StackPane?>
 
-<VBox minHeight="768.0" minWidth="1024.0" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.salespointfx2.www.controller.StarterController">
-  <children>
-    <MenuBar stylesheets="@../css/starter.css" VBox.vgrow="NEVER">
-      <menus>
-        <Menu mnemonicParsing="false" text="Venta">
-          <items>
-            <MenuItem fx:id="mItemVenta" mnemonicParsing="false" onAction="#venta" text="Nueva Venta">
-                     <accelerator>
-                        <KeyCodeCombination alt="ANY" code="F1" control="UP" meta="UP" shift="UP" shortcut="UP" />
-                     </accelerator></MenuItem>
-                  <MenuItem fx:id="mItemAbrirCajon" mnemonicParsing="false" text="Abrir Cajon">
-                     <accelerator>
-                        <KeyCodeCombination alt="ANY" code="F2" control="UP" meta="UP" shift="UP" shortcut="UP" />
-                     </accelerator>
-                  </MenuItem>
-                  <MenuItem fx:id="mItemCerrarCaja" mnemonicParsing="false" text="Cerrar Caja">
-                     <accelerator>
-                        <KeyCodeCombination alt="ANY" code="F3" control="UP" meta="UP" shift="UP" shortcut="UP" />
-                     </accelerator>
-                  </MenuItem>
-          </items>
-        </Menu>
-        <Menu mnemonicParsing="false" text="Consultas">
-          <items>
-            <MenuItem mnemonicParsing="false" text="Ventas" />
-            <MenuItem mnemonicParsing="false" text="Productos" />
-            <MenuItem mnemonicParsing="false" text="Inventario" />
-          </items>
-        </Menu>
-        <Menu mnemonicParsing="false" text="Gastos">
-          <items>
-            <MenuItem mnemonicParsing="false" text="Registrar Gasto" />
-                  <MenuItem mnemonicParsing="false" text="Gastos por fecha" />
-          </items>
-        </Menu>
-      </menus>
-    </MenuBar>
-    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="768.0" minWidth="1024.0" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.salespointfx2.www.controller.StarterController">
+   <children>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0">
          <children>
-            <BorderPane fx:id="anchorPanePrincipal" layoutX="390.0" layoutY="230.0" prefHeight="743.0" prefWidth="1024.0" stylesheets="@../css/starter.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            <BorderPane fx:id="borderPanePrincipal" layoutX="397.0" layoutY="212.0" prefHeight="768.0" prefWidth="1024.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <top>
+                  <MenuBar BorderPane.alignment="CENTER">
+                    <menus>
+                      <Menu mnemonicParsing="false" text="Ventas">
+                        <items>
+                          <MenuItem fx:id="mItemVentas" mnemonicParsing="false" onAction="#venta" text="Nueva Venta">
+                                 <accelerator>
+                                    <KeyCodeCombination alt="ANY" code="F1" control="UP" meta="UP" shift="UP" shortcut="UP" />
+                                 </accelerator>
+                              </MenuItem>
+                              <MenuItem fx:id="mItemAbrirCajon" mnemonicParsing="false" text="Abrir Cajon">
+                                 <accelerator>
+                                    <KeyCodeCombination alt="ANY" code="F2" control="UP" meta="UP" shift="UP" shortcut="UP" />
+                                 </accelerator>
+                              </MenuItem>
+                              <MenuItem fx:id="mItemCerarCaja" mnemonicParsing="false" text="Cerrar Caja">
+                                 <accelerator>
+                                    <KeyCodeCombination alt="ANY" code="F3" control="UP" meta="UP" shift="UP" shortcut="UP" />
+                                 </accelerator>
+                              </MenuItem>
+                        </items>
+                      </Menu>
+                      <Menu mnemonicParsing="false" text="Edit">
+                        <items>
+                          <MenuItem mnemonicParsing="false" text="Delete" />
+                        </items>
+                      </Menu>
+                      <Menu mnemonicParsing="false" text="Help">
+                        <items>
+                          <MenuItem mnemonicParsing="false" text="About" />
+                        </items>
+                      </Menu>
+                    </menus>
+                  </MenuBar>
+               </top>
+            </BorderPane>
          </children>
-    </AnchorPane>
-  </children>
-</VBox>
+      </AnchorPane>
+   </children>
+</StackPane>
