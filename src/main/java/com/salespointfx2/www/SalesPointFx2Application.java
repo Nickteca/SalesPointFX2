@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
 import com.salespointfx2.www.controller.MovimientoCajaController;
+import com.salespointfx2.www.controller.StarterController;
 import com.salespointfx2.www.service.MovimientoCajaService;
 import com.salespointfx2.www.service.SucursalService;
 
@@ -20,18 +21,22 @@ public class SalesPointFx2Application extends Application {
 	// ESTA VARIABLE NOS ARROJARA TODOS LOS BEANS O LOS CARGARA PARA PODER
 	// INJECTARLOS
 	private static ConfigurableApplicationContext context;
+	private static MovimientoCajaService mcs;
+	private static SucursalService ss;
 
 	public static void main(String[] args) {
 		context = SpringApplication.run(SalesPointFx2Application.class, args);
+		mcs = context.getBean(MovimientoCajaService.class);
+		ss = context.getBean(SucursalService.class);
 		launch();
 	}
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		MovimientoCajaService mcs = context.getBean(MovimientoCajaService.class);
-		SucursalService ss = context.getBean(SucursalService.class);
+
 		// EN LUGAR DE USAR LOS IF SE USA ESTE TIPO DE OPERACION POR SER OPTIONAL<>
-		ss.getSucursalActive().flatMap(sucursal -> mcs.getLastMovimientoCaja(Optional.of(sucursal))) // Pasamos un Optional<Sucursal>
+		ss.getSucursalActive().flatMap(sucursal -> mcs.getLastMovimientoCaja(Optional.of(sucursal))) // Pasamos un
+																										// Optional<Sucursal>
 				.filter(mc -> mc.getTipoMovimientoCaja() == 'A') // Filtramos según el tipo de movimiento
 				.ifPresentOrElse(mc -> {
 					// Si el tipo de movimiento es 'A', mostramos la ventana
@@ -47,11 +52,22 @@ public class SalesPointFx2Application extends Application {
 	}
 
 	public void mostrarPrincipal(Stage primaryStage) {
-
+		try {
+			StarterController sc = context.getBean(StarterController.class);
+			Parent starter = sc.load();
+			primaryStage = new Stage();
+			primaryStage.setScene(new Scene(starter));
+			primaryStage.setMaximized(true);
+			primaryStage.setTitle("SalespointFx");
+			primaryStage.setMinWidth(1024);  // Mínimo ancho permitido
+			primaryStage.setMinHeight(768); // Mínimo alto permitido
+			primaryStage.showAndWait();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 	}
 
 	public void abiriCaja() {
-		SucursalService ss = context.getBean(SucursalService.class);
 		MovimientoCajaController mcc = context.getBean(MovimientoCajaController.class);
 		Parent abrirCaja = mcc.load(ss.getSucursalActive().get().getNombreSucursal(), "Cerrar Caja");
 		Stage abrirCajaStage = new Stage();

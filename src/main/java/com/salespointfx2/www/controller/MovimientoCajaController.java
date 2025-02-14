@@ -52,7 +52,6 @@ public class MovimientoCajaController implements Initializable {
 
 	public Parent load(String titulo, String subtitulo) {
 		Parent root;
-
 		try {
 			root = springFXMLLoader.load("/fxml/movimientocaja.fxml").load();
 			this.lblTitulo.setText(titulo);
@@ -60,7 +59,6 @@ public class MovimientoCajaController implements Initializable {
 			return root;
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}
