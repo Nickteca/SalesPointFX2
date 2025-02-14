@@ -57,7 +57,7 @@ public class SalesPointFx2Application extends Application {
 			Parent starter = sc.load();
 			primaryStage = new Stage();
 			primaryStage.setScene(new Scene(starter));
-			primaryStage.setMaximized(true);
+			//primaryStage.setMaximized(true);
 			primaryStage.setTitle("SalespointFx");
 			primaryStage.setMinWidth(1024);  // Mínimo ancho permitido
 			primaryStage.setMinHeight(768); // Mínimo alto permitido

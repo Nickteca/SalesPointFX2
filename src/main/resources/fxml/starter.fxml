@@ -40,13 +40,13 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox minHeight="768.0" minWidth="1024.0" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.salespointfx2.www.controller.StarterController">
+<VBox minHeight="768.0" minWidth="1024.0" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.salespointfx2.www.controller.StarterController">
   <children>
-    <MenuBar VBox.vgrow="NEVER">
+    <MenuBar stylesheets="@../css/starter.css" VBox.vgrow="NEVER">
       <menus>
         <Menu mnemonicParsing="false" text="Venta">
           <items>
-            <MenuItem fx:id="mItemVenta" mnemonicParsing="false" text="Nueva Venta">
+            <MenuItem fx:id="mItemVenta" mnemonicParsing="false" onAction="#venta" text="Nueva Venta">
                      <accelerator>
                         <KeyCodeCombination alt="ANY" code="F1" control="UP" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator></MenuItem>
@@ -79,7 +79,7 @@
     </MenuBar>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
          <children>
-            <BorderPane fx:id="anchorPanePrincipal" layoutX="390.0" layoutY="230.0" prefHeight="743.0" prefWidth="1024.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            <BorderPane fx:id="anchorPanePrincipal" layoutX="390.0" layoutY="230.0" prefHeight="743.0" prefWidth="1024.0" stylesheets="@../css/starter.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
          </children>
     </AnchorPane>
   </children>
