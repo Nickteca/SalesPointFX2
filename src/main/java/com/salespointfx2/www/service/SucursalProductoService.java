@@ -24,4 +24,8 @@ public class SucursalProductoService {
 		return spr.findBySucursalIdSucursalAndVendibleTrueAndCategoriaIdCategoria(ss.getSucursalActive().get(), categoria);
 	}
 
+	public SucursalProducto getSucursalProductoById(Integer id) {
+		return spr.findById(id).get();
+	}
+
 }

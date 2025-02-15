@@ -53,4 +53,5 @@ public class VentaDetalle {
 	 * cantidad != null) { this.subTotal = this.precio * this.cantidad; } else {
 	 * this.subTotal = 0; } }
 	 */
+
 }
