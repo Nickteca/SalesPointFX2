@@ -49,7 +49,7 @@ public class StarterController implements Initializable {
 	@FXML
 	void venta(ActionEvent event) {
 		loadView("/fxml/venta.fxml");
-		VentaController vc = context.getBean(VentaController.class);
+		
 	}
 
 	public Parent load() {
@@ -74,6 +74,7 @@ public class StarterController implements Initializable {
 			AnchorPane view = fxml.load();
 			// BorderPane borderPane = (BorderPane) currentStage.getScene().getRoot();
 			borderPanePrincipal.setCenter(view);
+			//VentaController vc = context.getBean(VentaController.class);
 		} catch (IOException e) {
 			e.printStackTrace();
 			showErrorDialog("Error al cargar la vista", e.getMessage());

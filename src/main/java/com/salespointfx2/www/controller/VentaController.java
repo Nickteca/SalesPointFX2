@@ -301,8 +301,7 @@ public class VentaController implements Initializable, PropertyChangeListener {
 			// Si el producto ya está en la tabla, aumentar la cantidad
 			int nuevaCantidad = cantidad;
 			ventaExistente.setCantidad(nuevaCantidad);
-			// ventaExistente.setSubtotal(ventaExistente.getPrecioUnitario().get() *
-			// nuevaCantidad); // Recalcular subtotal
+			vvm.calcularTotal();
 		} else {
 			// Si no está, agregar un nuevo registro
 			VentaDetalleTabla nuevaVenta = new VentaDetalleTabla(new SimpleIntegerProperty(producto.getProductoIdProducto().getIdProducto()), // idProducto
@@ -316,21 +315,7 @@ public class VentaController implements Initializable, PropertyChangeListener {
 			tablaVenta.scrollTo(nuevaVenta);
 			tablaVenta.getSelectionModel().select(nuevaVenta);
 		}
-		// Refrescar la tabla para asegurarse de que los cambios se reflejan
-		// tablaVenta.refresh();
-
-		// Actualizar el total (si tienes una función para eso)
-		// calcularTotal();
-		/*
-		 * VentaDetalle ventaDetalle = new VentaDetalle();
-		 * ventaDetalle.setCantidad((short) cantidad);
-		 * ventaDetalle.setPrecio(producto.getPrecio());
-		 * ventaDetalle.setSubTotal(producto.getPrecio() * cantidad);
-		 * ventaDetalle.setSucursalProductoIdSucursalProducto(producto);
-		 * 
-		 * // Agregar el detalle de la venta a la lista y a la tabla
-		 * tablaVenta.getItems().add(ventaDetalle);
-		 */
+		//tablaVenta.refresh();
 	}
 
 	public void calcularTotal() {

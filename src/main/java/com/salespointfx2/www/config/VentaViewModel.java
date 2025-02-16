@@ -32,8 +32,9 @@ public class VentaViewModel {
 		calcularTotal();
 	}
 
-	private void calcularTotal() {
+	public void calcularTotal() {
 		double totalCalculado = productos.stream().mapToDouble(v -> v.getSubtotal().get()).sum();
 		total.set(totalCalculado);
 	}
+	
 }
