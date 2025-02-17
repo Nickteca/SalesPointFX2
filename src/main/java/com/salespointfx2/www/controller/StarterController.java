@@ -74,7 +74,9 @@ public class StarterController implements Initializable {
 			AnchorPane view = fxml.load();
 			// BorderPane borderPane = (BorderPane) currentStage.getScene().getRoot();
 			borderPanePrincipal.setCenter(view);
-			//VentaController vc = context.getBean(VentaController.class);
+			VentaController vc = context.getBean(VentaController.class);
+			vc.load();
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 			showErrorDialog("Error al cargar la vista", e.getMessage());

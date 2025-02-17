@@ -9,6 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.salespointfx2.www.controller.VentaController">
    <children>
@@ -34,8 +35,8 @@
                                     <TableColumn fx:id="colSubTotal" prefWidth="92.0" sortable="false" style="-fx-alignment: center;" text="SUBTOTAL" />
                                 </columns>
                               </TableView>
-                              <Button layoutX="14.0" layoutY="450.0" mnemonicParsing="false" text="Eliminar" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" />
-                              <Button layoutX="91.0" layoutY="450.0" mnemonicParsing="false" text="Limpiar" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="100.0" />
+                              <Button fx:id="btnEliminar" layoutX="14.0" layoutY="450.0" mnemonicParsing="false" onAction="#eliminarProducto" text="Eliminar" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" />
+                              <Button fx:id="btnLimpiar" layoutX="91.0" layoutY="450.0" mnemonicParsing="false" onAction="#limpiarProductos" text="Limpiar" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="100.0" />
                            </children>
                            <VBox.margin>
                               <Insets />
@@ -43,7 +44,16 @@
                         </AnchorPane>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                            <children>
-                              <Label fx:id="lblTotal" layoutX="242.0" layoutY="14.0" text="Label" />
+                              <Label fx:id="lblTotal" layoutX="242.0" layoutY="14.0" text="0.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="14.0">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font></Label>
+                              <Label layoutX="400.0" layoutY="14.0" text="TOTAL:" AnchorPane.rightAnchor="100.0">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Button fx:id="btnCobrar" layoutX="440.0" layoutY="345.0" mnemonicParsing="false" onAction="#cobrar" text="COBRAR" AnchorPane.bottomAnchor="50.0" AnchorPane.rightAnchor="14.0" />
                            </children>
                         </AnchorPane>
                      </children></VBox>

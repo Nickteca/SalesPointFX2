@@ -35,6 +35,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.input.KeyCode;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -50,6 +51,7 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 @Component
 public class VentaController implements Initializable, PropertyChangeListener {
@@ -63,8 +65,6 @@ public class VentaController implements Initializable, PropertyChangeListener {
 	private CategoriaService cs;
 	@Autowired
 	private VentaViewModel vvm;
-	@FXML
-	private Button btnPrueba;
 
 	@FXML
 	private TabPane tPaneProductos;
@@ -84,6 +84,14 @@ public class VentaController implements Initializable, PropertyChangeListener {
 
 	@FXML
 	private Label lblTotal;
+	@FXML
+	private Button btnCobrar;
+
+	@FXML
+	private Button btnEliminar;
+
+	@FXML
+	private Button btnLimpiar;
 
 	@FXML
 	void guardarVenta(ActionEvent event) {
@@ -105,8 +113,14 @@ public class VentaController implements Initializable, PropertyChangeListener {
 		colPrecio.setCellValueFactory(cellData -> cellData.getValue().getPrecioUnitario().asObject());
 		colSubTotal.setCellValueFactory(cellData -> cellData.getValue().getSubtotal().asObject());
 
+		tablaVenta.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
 		tablaVenta.setItems(vvm.getProductos());
 		lblTotal.textProperty().bind(vvm.totalProperty().asString("%.2f"));
+		vvm.getProductos().clear();
+		vvm.calcularTotal(); // Si recalcula el total según la lista, será 0
+		
+		
 	}
 
 	public void getProductosXCategoria() {
@@ -270,7 +284,12 @@ public class VentaController implements Initializable, PropertyChangeListener {
 	}
 
 	public void load() {
-
+		btnCobrar.getScene().setOnKeyPressed(event -> {
+			if (event.getCode() == KeyCode.F12) {
+				event.consume(); // Evitar propagación del evento
+				btnCobrar.fire(); // Ejecutar el botón de prueba siempre
+			}
+		});
 	}
 
 	@Override
@@ -295,7 +314,9 @@ public class VentaController implements Initializable, PropertyChangeListener {
 	public void agregarProductoAVenta(SucursalProducto producto, int cantidad) {
 
 		// Verificar si el producto ya está en la tabla
-		VentaDetalleTabla ventaExistente = tablaVenta.getItems().stream().filter(v -> v.getProducto().get().equals(producto.getProductoIdProducto().getNombreProducto())).findFirst().orElse(null);
+		VentaDetalleTabla ventaExistente = tablaVenta.getItems().stream()
+				.filter(v -> v.getProducto().get().equals(producto.getProductoIdProducto().getNombreProducto()))
+				.findFirst().orElse(null);
 
 		if (ventaExistente != null) {
 			// Si el producto ya está en la tabla, aumentar la cantidad
@@ -304,8 +325,10 @@ public class VentaController implements Initializable, PropertyChangeListener {
 			vvm.calcularTotal();
 		} else {
 			// Si no está, agregar un nuevo registro
-			VentaDetalleTabla nuevaVenta = new VentaDetalleTabla(new SimpleIntegerProperty(producto.getProductoIdProducto().getIdProducto()), // idProducto
-					new SimpleStringProperty(producto.getProductoIdProducto().getNombreProducto()), // Nombre del producto
+			VentaDetalleTabla nuevaVenta = new VentaDetalleTabla(
+					new SimpleIntegerProperty(producto.getProductoIdProducto().getIdProducto()), // idProducto
+					new SimpleStringProperty(producto.getProductoIdProducto().getNombreProducto()), // Nombre del
+																									// producto
 					new SimpleIntegerProperty(cantidad), // Cantidad inicial
 					new SimpleFloatProperty(producto.getPrecio()), // Precio unitario
 					new SimpleFloatProperty(producto.getPrecio() * cantidad) // Subtotal (cantidad * precio)
@@ -315,32 +338,66 @@ public class VentaController implements Initializable, PropertyChangeListener {
 			tablaVenta.scrollTo(nuevaVenta);
 			tablaVenta.getSelectionModel().select(nuevaVenta);
 		}
-		//tablaVenta.refresh();
+		// tablaVenta.refresh();
 	}
 
-	public void calcularTotal() {
-		double total = 0.0; // Inicializa el total
+	@FXML
+	void cobrar(ActionEvent event) {
+		try {
+	        if (tablaVenta.getItems().isEmpty()) {
+	            throw new Exception("❌ Alerta: La tabla está vacía.");
+	        }
 
-		// Recorrer todos los elementos de la tabla y sumar los subtotales
-		for (VentaDetalleTabla venta : tablaVenta.getItems()) {
-			total += venta.getSubtotal().get(); // Sumar el subtotal de cada producto
+	        // Obtener el total de la venta (verificar si es un número)
+	        double totalVenta;
+	        try {
+	            totalVenta = Double.parseDouble(lblTotal.getText().replace("$", "").trim());
+	        } catch (NumberFormatException e) {
+	            throw new Exception("❌ Alerta: Total inválido.");
+	        }
+
+	        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/cambio.fxml"));
+	        Parent root = loader.load();
+
+	        // Obtener el controlador y pasar los datos necesarios
+	        CambioController controlador = context.getBean(CambioController.class);
+	        controlador.load(totalVenta, tablaVenta.getItems());
+
+	        Stage stage = new Stage();
+	        stage.initModality(Modality.APPLICATION_MODAL); // Hace que la ventana sea modal
+	        stage.initStyle(StageStyle.DECORATED); // Puedes cambiarlo a UNDECORATED si prefieres sin bordes
+	        stage.setTitle("Cobrando");
+	        stage.setScene(new Scene(root));
+	        stage.setResizable(false);
+	        stage.showAndWait(); // Espera hasta que el modal se cierre
+	    } catch (Exception e) {
+	        Alert infoAlert = new Alert(AlertType.WARNING);
+	        infoAlert.setTitle("Alerta");
+	        infoAlert.setHeaderText("Alerta");
+	        infoAlert.setContentText(e.getMessage());
+	        infoAlert.showAndWait();
+	    }
+	}
+
+	@FXML
+	void eliminarProducto(ActionEvent event) {
+		VentaDetalleTabla productoSeleccionado = tablaVenta.getSelectionModel().getSelectedItem();
+
+		if (productoSeleccionado != null) {
+			vvm.eliminarProducto(productoSeleccionado);
+		} else {
+			Alert alert = new Alert(Alert.AlertType.WARNING);
+			alert.setTitle("Atención");
+			alert.setHeaderText("No se ha seleccionado ningún producto");
+			alert.setContentText("Por favor, selecciona un producto para eliminar.");
+			alert.showAndWait();
 		}
-
-		// Actualizar el Label con el total
-		actualizarTotalLabel(total);
 	}
 
-	private void actualizarTotalLabel(double total) {
-		NumberFormat formatoMoneda = NumberFormat.getCurrencyInstance(Locale.of("es", "MX"));
-
-		// If total is an integer, show without decimals; if it has decimals, show with
-		// one.
-		DecimalFormat formatoPersonalizado = new DecimalFormat(total % 1 == 0 ? "$#,###" : "$#,##0.0");
-
-		// labelTotal.setText(formatoPersonalizado.format(total));
-		// Formatear el total como un número con dos decimales
-		// labelTotal.setText(total % 1 == 0 ? String.format("%.0f", total) :
-		// String.format("%.1f", total));
+	@FXML
+	void limpiarProductos(ActionEvent event) {
+		vvm.getProductos().clear();
+		vvm.calcularTotal(); // Si recalcula el total según la lista, será 0
 	}
 
 }

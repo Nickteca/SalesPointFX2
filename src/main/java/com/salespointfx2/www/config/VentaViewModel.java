@@ -36,5 +36,12 @@ public class VentaViewModel {
 		double totalCalculado = productos.stream().mapToDouble(v -> v.getSubtotal().get()).sum();
 		total.set(totalCalculado);
 	}
-	
+
+	public void eliminarProducto(VentaDetalleTabla producto) {
+		if (productos.contains(producto)) {
+			productos.remove(producto);
+			calcularTotal(); // Recalcular total después de eliminar
+		}
+	}
+
 }
