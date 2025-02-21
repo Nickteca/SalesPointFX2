@@ -11,10 +11,11 @@ import com.salespointfx2.www.repository.VentaDetalleRepo;
 
 @Service
 public class VentaDetalleService {
-	@Autowired private VentaDetalleRepo vdr;
-	
+	@Autowired
+	private VentaDetalleRepo vdr;
+
 	@Transactional
-	public void saveAll(List <VentaDetalle> vd) {
-		vdr.saveAll(vd);
+	public List<VentaDetalle> saveAll(List<VentaDetalle> vd) {
+		return vdr.saveAll(vd);
 	}
 }

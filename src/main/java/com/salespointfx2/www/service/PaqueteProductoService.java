@@ -11,9 +11,10 @@ import com.salespointfx2.www.repository.PaqueteProductoRepo;
 
 @Service
 public class PaqueteProductoService {
-	@Autowired private PaqueteProductoRepo ppr;
-	
-	public List<PaqueteProducto> getPaqueteProductoById(Producto  paquete){
+	@Autowired
+	private PaqueteProductoRepo ppr;
+
+	public List<PaqueteProducto> getPaqueteProductoById(Producto paquete) {
 		return ppr.findByPaqueteIdPaquete(paquete);
 	}
 }

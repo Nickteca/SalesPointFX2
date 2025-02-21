@@ -9,14 +9,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.salespointfx2.www.config.VentaConverter;
 import com.salespointfx2.www.dto.VentaDetalleTabla;
-import com.salespointfx2.www.model.Folio;
 import com.salespointfx2.www.model.PaqueteProducto;
 import com.salespointfx2.www.model.Producto;
 import com.salespointfx2.www.model.Sucursal;
 import com.salespointfx2.www.model.SucursalProducto;
 import com.salespointfx2.www.model.Venta;
 import com.salespointfx2.www.model.VentaDetalle;
-import com.salespointfx2.www.repository.VentaDetalleRepo;
 import com.salespointfx2.www.repository.VentaRepo;
 
 import javafx.scene.control.Alert;
@@ -24,11 +22,18 @@ import javafx.scene.control.Alert.AlertType;
 
 @Service
 public class VentaService {
-	@Autowired private VentaRepo vr;
-	@Autowired private VentaDetalleService vds;
-	@Autowired private FolioService fs;
-	@Autowired private SucursalProductoService sps;
-	@Autowired private PaqueteProductoService pps;
+	@Autowired
+	private TicketPrinter tps;
+	@Autowired
+	private VentaRepo vr;
+	@Autowired
+	private VentaDetalleService vds;
+	@Autowired
+	private FolioService fs;
+	@Autowired
+	private SucursalProductoService sps;
+	@Autowired
+	private PaqueteProductoService pps;
 
 	@Autowired
 	private SucursalService ss;
@@ -52,47 +57,47 @@ public class VentaService {
 
 			// Convertir los DTO a VentaDetalle y asignar la venta registrada
 			List<VentaDetalle> detalles = ventaConverter.convertToVentaDetalle(dtos, ventaGuardada);
-			ventaGuardada.setVentaDetalleList(detalles);
-			vds.saveAll(detalles);
+			ventaGuardada.setVentaDetalleList(vds.saveAll(detalles));
+
 			// ACTUALIZAMOS EL FOLIO
 			fs.updateFolioVenta(fs.getFolioVenta());
 			//
 			// NO CRAGA EL NOMRE DEL PRODUCTO SEL SUCURSALPRODUCTO
 			for (VentaDetalle ventaDetalle : detalles) {
-				SucursalProducto sp = sps.getByIdWithProducto(
-						ventaDetalle.getSucursalProductoIdSucursalProducto().getIdSucursalProducto());
-				if (sp != null) {
-					Producto p = sp.getProductoIdProducto();
-					if (p.isEsPaquete()) {
-						List<PaqueteProducto> productosDelPaquete = pps.getPaqueteProductoById(p);
-						for (PaqueteProducto pp : productosDelPaquete) {	
-							float nuevoInventario = sp.getInventario()-(pp.getCantidad()*ventaDetalle.getCantidad());
-							sp.setInventario(nuevoInventario);
-							sps.updateInventory(sp);
-							/*SucursalProducto sp = sucursalProductoRepository
-									.findBySucursalIdSucursalAndProductoIdProducto(
-											ventaGuardada.getSucursalIdSucursal(),
-											pp.getProductoIdProducto().getIdProducto());
+				SucursalProducto sp = sps.getSucursalProductoById(ventaDetalle.getSucursalProductoIdSucursalProducto().getIdSucursalProducto());
+				Producto p = sp.getProductoIdProducto();
+				if (p.isEsPaquete()) {
+					List<PaqueteProducto> lpp = pps.getPaqueteProductoById(p);
+					for (PaqueteProducto paquteProduto : lpp) {
+						SucursalProducto spCompnente = sps.getSucursalProductoById(paquteProduto.getProductoIdProducto().getIdProducto());
 
-							if (sp != null) {
-								// Descontamos la cantidad correspondiente del producto dentro del paquete
-								float nuevoInventario = sp.getInventario()
-										- (pp.getCantidad() * vd.getCantidadVendida());
-								sp.setInventario(nuevoInventario);
-								sucursalProductoRepository.save(sp);
-							} else {
-								throw new RuntimeException("Producto no encontrado en inventario para la sucursal");
-							}*/
-						}
+						spCompnente.setInventario(spCompnente.getInventario() - (paquteProduto.getCantidad() * ventaDetalle.getCantidad()));
+						sps.updateInventory(spCompnente);
+
+						Alert infoAlert = new Alert(AlertType.INFORMATION);
+						infoAlert.setTitle(paquteProduto.getPaqueteIdPaquete().getNombreProducto());
+						infoAlert.setHeaderText("Contiene");
+						infoAlert.setContentText(paquteProduto.getProductoIdProducto().getNombreProducto() + " Cantidad: " + paquteProduto.getCantidad());
+						infoAlert.showAndWait();
 					}
+					// Restar la cantidad correspondiente al paquete
 
 				} else {
-					throw new Exception("❌ Alerta: SucursalProducto no existe.");
+					// 🔹 Si es un producto normal, restamos su stock directamente
+					sp.setInventario(sp.getInventario() - ventaDetalle.getCantidad());
+					sps.updateInventory(sp);
+					Alert infoAlert = new Alert(AlertType.INFORMATION);
+					infoAlert.setTitle("Producto");
+					infoAlert.setHeaderText("Que producto se relaciona");
+					infoAlert.setContentText(p.getNombreProducto());
+					infoAlert.showAndWait();
 				}
-
 			}
+			tps.printTicket(ventaGuardada.toString());
 			return ventaGuardada;
-		} catch (Exception e) {
+		} catch (
+
+		Exception e) {
 			Alert infoAlert = new Alert(AlertType.ERROR);
 			infoAlert.setTitle("Error al ingresar la venta");
 			infoAlert.setHeaderText("Error en la transaccion");
