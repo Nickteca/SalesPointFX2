@@ -13,7 +13,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="511.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.salespointfx2.www.controller.CambioController">
    <children>
       <AnchorPane prefHeight="200.0" prefWidth="200.0">
@@ -57,18 +56,18 @@
                                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                       </rowConstraints>
                                        <children>
-                                          <Button fx:id="btnCancelar" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="CANCELAR" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-                                          <Button fx:id="btnLimpiar" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="LIMPIAR" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                          <Button fx:id="btn0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="0" GridPane.rowIndex="3" />
-                                          <Button fx:id="btn1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="1" GridPane.rowIndex="2" />
-                                          <Button fx:id="btn2" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="2" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                          <Button fx:id="btn3" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="3" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                                          <Button fx:id="btn4" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="4" GridPane.rowIndex="1" />
-                                          <Button fx:id="btn5" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="5" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                          <Button fx:id="btn6" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="6" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                                          <Button fx:id="btn7" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="7" />
-                                          <Button fx:id="btn8" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="8" GridPane.columnIndex="1" />
-                                          <Button fx:id="btn9" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="9" GridPane.columnIndex="2" />
+                                          <Button fx:id="btnCancelar" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#cerrar" text="CANCELAR" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                                          <Button fx:id="btnLimpiar" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#limpiar" text="LIMPIAR" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                          <Button fx:id="btn0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#agregarEfectivo" text="0" GridPane.rowIndex="3" />
+                                          <Button fx:id="btn1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#agregarEfectivo" text="1" GridPane.rowIndex="2" />
+                                          <Button fx:id="btn2" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#agregarEfectivo" text="2" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                          <Button fx:id="btn3" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#agregarEfectivo" text="3" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                                          <Button fx:id="btn4" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#agregarEfectivo" text="4" GridPane.rowIndex="1" />
+                                          <Button fx:id="btn5" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#agregarEfectivo" text="5" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                          <Button fx:id="btn6" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#agregarEfectivo" text="6" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                          <Button fx:id="btn7" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#agregarEfectivo" text="7" />
+                                          <Button fx:id="btn8" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#agregarEfectivo" text="8" GridPane.columnIndex="1" />
+                                          <Button fx:id="btn9" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#agregarEfectivo" text="9" GridPane.columnIndex="2" />
                                        </children>
                                     </GridPane>
                                  </children>
@@ -109,7 +108,7 @@
                                        </font>
                                     </TextField>
                                     <Button fx:id="btnCobrar" layoutX="310.0" layoutY="156.0" mnemonicParsing="false" onAction="#cobrarTotal" text="COBRAR" />
-                                    <Button fx:id="btncantidadExacta" layoutX="174.0" layoutY="156.0" mnemonicParsing="false" text="CANTIDAD EXACTA" />
+                                    <Button fx:id="btncantidadExacta" layoutX="174.0" layoutY="156.0" mnemonicParsing="false" onAction="#cantidadExacta" text="CANTIDAD EXACTA" />
                                  </children>
                               </AnchorPane>
                            </children>

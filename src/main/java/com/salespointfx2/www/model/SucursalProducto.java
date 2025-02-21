@@ -71,4 +71,10 @@ public class SucursalProducto {
 		this.sucursalIdSucursal = sucursalIdSucursal;
 	}
 
+	public SucursalProducto(Integer idSucursalProducto) {
+		super();
+		this.idSucursalProducto = idSucursalProducto;
+	}
+	
+
 }

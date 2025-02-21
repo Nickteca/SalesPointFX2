@@ -18,8 +18,10 @@ import com.salespointfx2.www.config.SpringFXMLLoader;
 import com.salespointfx2.www.config.VentaViewModel;
 import com.salespointfx2.www.dto.VentaDetalleTabla;
 import com.salespointfx2.www.model.Categoria;
+import com.salespointfx2.www.model.Folio;
 import com.salespointfx2.www.model.SucursalProducto;
 import com.salespointfx2.www.service.CategoriaService;
+import com.salespointfx2.www.service.FolioService;
 import com.salespointfx2.www.service.SucursalProductoService;
 
 import javafx.beans.property.SimpleFloatProperty;
@@ -65,6 +67,8 @@ public class VentaController implements Initializable, PropertyChangeListener {
 	private CategoriaService cs;
 	@Autowired
 	private VentaViewModel vvm;
+	@Autowired
+	private FolioService fs;
 
 	@FXML
 	private TabPane tPaneProductos;
@@ -84,6 +88,8 @@ public class VentaController implements Initializable, PropertyChangeListener {
 
 	@FXML
 	private Label lblTotal;
+	@FXML
+	private Label lblFoliio;
 	@FXML
 	private Button btnCobrar;
 
@@ -117,10 +123,27 @@ public class VentaController implements Initializable, PropertyChangeListener {
 
 		tablaVenta.setItems(vvm.getProductos());
 		lblTotal.textProperty().bind(vvm.totalProperty().asString("%.2f"));
+		
+		// Vincular lblFoliio a la propiedad folio del ViewModel
+	    lblFoliio.textProperty().bind(vvm.folioProperty());
+	    
 		vvm.getProductos().clear();
 		vvm.calcularTotal(); // Si recalcula el total según la lista, será 0
-		
-		
+		vvm.actualizarFolio();
+
+	}
+
+	public void actualizarFolio() {
+	    // Supón que fs.getFolioVenta() retorna un objeto Folio con la información actual.
+	    Folio folioActual = fs.getFolioVenta();
+	    // Formatea el folio según el formato deseado, por ejemplo: "VEN-11-1"
+	    String folioFormateado = String.format("%s-%d-%d",
+	            folioActual.getAcronimoFolio().replace("-", ""),
+	            folioActual.getSucursalIdSucursal().getIdSucursal(),
+	            folioActual.getNumeroFolio());
+	    // Actualiza la propiedad en el ViewModel
+	    vvm.setFolio(folioFormateado);
+	    lblFoliio.setUserData(folioActual);
 	}
 
 	public void getProductosXCategoria() {
@@ -344,39 +367,45 @@ public class VentaController implements Initializable, PropertyChangeListener {
 	@FXML
 	void cobrar(ActionEvent event) {
 		try {
-	        if (tablaVenta.getItems().isEmpty()) {
-	            throw new Exception("❌ Alerta: La tabla está vacía.");
-	        }
+			if (tablaVenta.getItems().isEmpty()) {
+				throw new Exception("❌ Alerta: La tabla está vacía.");
+			}
 
-	        // Obtener el total de la venta (verificar si es un número)
-	        double totalVenta;
-	        try {
-	            totalVenta = Double.parseDouble(lblTotal.getText().replace("$", "").trim());
-	        } catch (NumberFormatException e) {
-	            throw new Exception("❌ Alerta: Total inválido.");
-	        }
+			// Obtener el total de la venta (verificar si es un número)
+			double totalVenta;
+			try {
+				totalVenta = Double.parseDouble(lblTotal.getText().replace("$", "").trim());
+			} catch (NumberFormatException e) {
+				throw new Exception("❌ Alerta: Total inválido.");
+			}
+			// springFXMLLoader.load(fxmlPath);
+			FXMLLoader loader = springFXMLLoader.load("/fxml/cambio.fxml");
+			Parent root = loader.load();
 
-	        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/cambio.fxml"));
-	        Parent root = loader.load();
+			// Obtener el controlador y pasar los datos necesarios
+			CambioController contro = loader.getController();
+			contro.load(totalVenta, tablaVenta.getItems(), lblFoliio.getText());
+			//System.out.println("Los que le estamos mndando des: "+tablaVenta.getItems());
 
-	        // Obtener el controlador y pasar los datos necesarios
-	        CambioController controlador = context.getBean(CambioController.class);
-	        controlador.load(totalVenta, tablaVenta.getItems());
+			/*
+			 * CambioController controlador = loader.getController();
+			 * controlador.load(totalVenta, tablaVenta.getItems());
+			 */
 
-	        Stage stage = new Stage();
-	        stage.initModality(Modality.APPLICATION_MODAL); // Hace que la ventana sea modal
-	        stage.initStyle(StageStyle.DECORATED); // Puedes cambiarlo a UNDECORATED si prefieres sin bordes
-	        stage.setTitle("Cobrando");
-	        stage.setScene(new Scene(root));
-	        stage.setResizable(false);
-	        stage.showAndWait(); // Espera hasta que el modal se cierre
-	    } catch (Exception e) {
-	        Alert infoAlert = new Alert(AlertType.WARNING);
-	        infoAlert.setTitle("Alerta");
-	        infoAlert.setHeaderText("Alerta");
-	        infoAlert.setContentText(e.getMessage());
-	        infoAlert.showAndWait();
-	    }
+			Stage stage = new Stage();
+			stage.initModality(Modality.APPLICATION_MODAL); // Hace que la ventana sea modal
+			stage.initStyle(StageStyle.DECORATED); // Puedes cambiarlo a UNDECORATED si prefieres sin bordes
+			stage.setTitle("Cobrando");
+			stage.setScene(new Scene(root));
+			stage.setResizable(false);
+			stage.showAndWait(); // Espera hasta que el modal se cierre
+		} catch (Exception e) {
+			Alert infoAlert = new Alert(AlertType.WARNING);
+			infoAlert.setTitle("Alerta");
+			infoAlert.setHeaderText("Alerta");
+			infoAlert.setContentText(e.getMessage());
+			infoAlert.showAndWait();
+		}
 	}
 
 	@FXML

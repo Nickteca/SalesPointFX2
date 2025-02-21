@@ -27,5 +27,13 @@ public class SucursalProductoService {
 	public SucursalProducto getSucursalProductoById(Integer id) {
 		return spr.findById(id).get();
 	}
+	//CON ESTA CON SULGA LO QUE HACEMOS ES OLVIDARNO DEL FETCH EAGER, YA QUE NO CARGA AUTOMATOCAMENTE TODO
+	public SucursalProducto getByIdWithProducto(int id){
+		return spr.findByIdWithProducto(id).get();
+	}
+	
+	public void updateInventory(SucursalProducto sp){
+		spr.save(sp);
+	}
 
 }

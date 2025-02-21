@@ -66,4 +66,11 @@ public class Venta {
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "ventaIdVenta")
 	private List<VentaDetalle> ventaDetalleList;
+
+	public Venta(Integer idVenta) {
+		super();
+		this.idVenta = idVenta;
+	}
+	
+	
 }
