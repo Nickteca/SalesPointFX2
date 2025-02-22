@@ -93,7 +93,7 @@ public class VentaService {
 					infoAlert.showAndWait();
 				}
 			}
-			tps.printTicket(ventaGuardada.toString());
+			tps.printTicket(ventaGuardada);
 			return ventaGuardada;
 		} catch (
 
