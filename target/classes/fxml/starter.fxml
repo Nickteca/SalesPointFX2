@@ -40,7 +40,6 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.StackPane?>
 
-
 <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="768.0" minWidth="1024.0" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.salespointfx2.www.controller.StarterController">
    <children>
       <AnchorPane prefHeight="200.0" prefWidth="200.0">
@@ -56,7 +55,7 @@
                                     <KeyCodeCombination alt="ANY" code="F1" control="UP" meta="UP" shift="UP" shortcut="UP" />
                                  </accelerator>
                               </MenuItem>
-                              <MenuItem fx:id="mItemAbrirCajon" mnemonicParsing="false" text="Abrir Cajon">
+                              <MenuItem fx:id="mItemAbrirCajon" mnemonicParsing="false" onAction="#abrirCajon" text="Abrir Cajon">
                                  <accelerator>
                                     <KeyCodeCombination alt="ANY" code="F2" control="UP" meta="UP" shift="UP" shortcut="UP" />
                                  </accelerator>

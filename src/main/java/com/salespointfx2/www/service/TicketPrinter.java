@@ -1,6 +1,6 @@
 package com.salespointfx2.www.service;
 
-import java.util.Arrays;
+import java.io.IOException;
 import java.util.List;
 
 import javax.print.PrintService;
@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.github.anastaciocintra.escpos.EscPos;
 import com.github.anastaciocintra.escpos.EscPosConst;
 import com.github.anastaciocintra.escpos.Style;
+import com.github.anastaciocintra.escpos.barcode.QRCode;
 import com.github.anastaciocintra.output.PrinterOutputStream;
 import com.salespointfx2.www.model.SucursalProducto;
 import com.salespointfx2.www.model.Venta;
@@ -93,22 +94,7 @@ public class TicketPrinter {
 			escpos.writeLF(fontB, "----------------------------------------------------------------");
 			escpos.writeLF(headerStyle.setBold(true), String.format("%-22s %5s %8s %8s", "", "", "Total", "$" + String.format("%,.0f", total)));
 			// Código de barras EAN13
-			String barcode = "123456789012"; // El código de barras que quieres imprimir
 
-			// Comando para imprimir código de barras EAN13
-			byte[] barcodeCommand = new byte[] { 0x1D, 0x6B, 0x02, // Comando ESC/POS para código de barras
-					(byte) barcode.length(), // Longitud del código
-					0x00, 0x01, 0x03, // Parámetros adicionales si son necesarios
-			};
-
-			// Convertir la cadena del código de barras en un array de bytes y agregar al
-			// comando
-			for (char c : barcode.toCharArray()) {
-				barcodeCommand = Arrays.copyOf(barcodeCommand, barcodeCommand.length + 1);
-				barcodeCommand[barcodeCommand.length - 1] = (byte) c;
-			}
-			// Escribir el código de barras
-			escpos.writel(barcodeCommand);
 			// Cortar papel y cerrar conexión
 			escpos.feed(5);
 			escpos.cut(EscPos.CutMode.FULL);
@@ -121,8 +107,6 @@ public class TicketPrinter {
 
 			escpos.close();
 
-			System.out.println("Ticket impreso correctamente.");
-
 		} catch (Exception e) {
 			Alert infoAlert = new Alert(AlertType.INFORMATION);
 			infoAlert.setTitle("Problema de impresora");
@@ -132,9 +116,60 @@ public class TicketPrinter {
 		}
 	}
 
-	public void codigoBarras() {
+	public void abririCajon() {
+		try {
+			PrintService defaultPrintService = PrintServiceLookup.lookupDefaultPrintService();
 
-		// Cortar el papel (opcional)
-		escpos.cut(EscPos.CutMode.FULL);
+			if (defaultPrintService == null) {
+				System.out.println("No hay una impresora predeterminada configurada.");
+				throw new Exception("No hay impresora pero se registro la venta");
+			}
+			// Crear el stream de la impresora
+			PrinterOutputStream printerOutputStream = new PrinterOutputStream(defaultPrintService);
+			EscPos escpos = new EscPos(printerOutputStream);
+			byte[] abrirCaja = new byte[] { 0x1B, 0x70, 0x00, 0x19, (byte) 0xFA };
+
+			// Escribe los bytes al outputStream (suponiendo que escpos es un flujo de
+			// salida)
+			escpos.write(abrirCaja, 0, abrirCaja.length); // 0 es el offset y abrirCaja.length es la longitud
+
+			escpos.close();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+
+	public void codigoBarras() {
+		try {
+			// Buscar la impresora predeterminada
+			PrintService printService = PrintServiceLookup.lookupDefaultPrintService();
+			if (printService == null) {
+				System.out.println("No se encontró una impresora.");
+				return;
+			}
+
+			// Crear el stream de la impresora
+			PrinterOutputStream printerOutputStream = new PrinterOutputStream(printService);
+			EscPos escpos = new EscPos(printerOutputStream);
+
+			// Crear y configurar el código QR
+			QRCode qrCode = new QRCode();
+			qrCode.setSize(10); // Tamaño del QR (1-16)
+			qrCode.setModel(QRCode.QRModel._1_Default); // Modelo QR
+			qrCode.setErrorCorrectionLevel(QRCode.QRErrorCorrectionLevel.QR_ECLEVEL_M_Default); // Nivel de corrección
+			qrCode.setJustification(EscPos.Justification.Center); // Centrar QR
+
+			// Enviar el QR a la impresora
+			escpos.write(qrCode, "https://www.tiendaejemplo.com");
+
+			escpos.feed(5); // Espaciado
+			escpos.cut(EscPos.CutMode.FULL); // Corte de papel
+			escpos.close();
+
+			System.out.println("Código QR impreso correctamente.");
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

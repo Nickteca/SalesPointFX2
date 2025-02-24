@@ -9,6 +9,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Component;
 
 import com.salespointfx2.www.config.SpringFXMLLoader;
+import com.salespointfx2.www.service.TicketPrinter;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -28,6 +29,8 @@ public class StarterController implements Initializable {
 	private SpringFXMLLoader springFXMLLoader;
 	@Autowired
 	private ConfigurableApplicationContext context;
+	@Autowired
+	private TicketPrinter tps;
 
 	private Stage currentStage;
 	@FXML
@@ -47,9 +50,15 @@ public class StarterController implements Initializable {
 	}
 
 	@FXML
+	void abrirCajon(ActionEvent event) {
+
+		tps.abririCajon();
+	}
+
+	@FXML
 	void venta(ActionEvent event) {
 		loadView("/fxml/venta.fxml");
-		
+
 	}
 
 	public Parent load() {
@@ -76,7 +85,7 @@ public class StarterController implements Initializable {
 			borderPanePrincipal.setCenter(view);
 			VentaController vc = context.getBean(VentaController.class);
 			vc.load();
-			
+
 		} catch (IOException e) {
 			e.printStackTrace();
 			showErrorDialog("Error al cargar la vista", e.getMessage());

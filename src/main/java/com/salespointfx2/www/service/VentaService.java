@@ -25,6 +25,10 @@ public class VentaService {
 	@Autowired
 	private TicketPrinter tps;
 	@Autowired
+	private PDFService pdfs;
+	@Autowired
+	private MovimientoCajaService mcs;
+	@Autowired
 	private VentaRepo vr;
 	@Autowired
 	private VentaDetalleService vds;
@@ -39,62 +43,78 @@ public class VentaService {
 	private SucursalService ss;
 	@Autowired
 	private VentaConverter ventaConverter;
+	@Autowired
+	private WhatsAppService was;
 
 	@Transactional
 	public Venta saveVenta(String folio, float totalVenta, List<VentaDetalleTabla> dtos) {
+		String respuesta;
 		try {
-			// Crear la entidad Venta
-			Venta venta = new Venta();
-			venta.setFolio(folio);
-			venta.setTotalVenta(totalVenta);
-			venta.setStatus(true);
-			venta.setNaturalezaVenta('S'); // O según tu lógica
-			venta.setCreatedAt(LocalDateTime.now());
-			venta.setSucursalIdSucursal(new Sucursal(ss.getSucursalActive().get().getIdSucursal()));
+			if (mcs.getLastMovimientoCaja(ss.getSucursalActive()).get().getCreatedAt().isBefore(LocalDateTime.now())) {
 
-			// Primero, guarda la venta para generar el ID
-			Venta ventaGuardada = vr.save(venta);
+				// Crear la entidad Venta
+				Venta venta = new Venta();
+				venta.setFolio(folio);
+				venta.setTotalVenta(totalVenta);
+				venta.setStatus(true);
+				venta.setNaturalezaVenta('S'); // O según tu lógica
+				venta.setCreatedAt(LocalDateTime.now());
+				venta.setSucursalIdSucursal(new Sucursal(ss.getSucursalActive().get().getIdSucursal()));
 
-			// Convertir los DTO a VentaDetalle y asignar la venta registrada
-			List<VentaDetalle> detalles = ventaConverter.convertToVentaDetalle(dtos, ventaGuardada);
-			ventaGuardada.setVentaDetalleList(vds.saveAll(detalles));
+				// Primero, guarda la venta para generar el ID
+				Venta ventaGuardada = vr.save(venta);
 
-			// ACTUALIZAMOS EL FOLIO
-			fs.updateFolioVenta(fs.getFolioVenta());
-			//
-			// NO CRAGA EL NOMRE DEL PRODUCTO SEL SUCURSALPRODUCTO
-			for (VentaDetalle ventaDetalle : detalles) {
-				SucursalProducto sp = sps.getSucursalProductoById(ventaDetalle.getSucursalProductoIdSucursalProducto().getIdSucursalProducto());
-				Producto p = sp.getProductoIdProducto();
-				if (p.isEsPaquete()) {
-					List<PaqueteProducto> lpp = pps.getPaqueteProductoById(p);
-					for (PaqueteProducto paquteProduto : lpp) {
-						SucursalProducto spCompnente = sps.getSucursalProductoById(paquteProduto.getProductoIdProducto().getIdProducto());
+				// Convertir los DTO a VentaDetalle y asignar la venta registrada
+				List<VentaDetalle> detalles = ventaConverter.convertToVentaDetalle(dtos, ventaGuardada);
+				ventaGuardada.setVentaDetalleList(vds.saveAll(detalles));
 
-						spCompnente.setInventario(spCompnente.getInventario() - (paquteProduto.getCantidad() * ventaDetalle.getCantidad()));
-						sps.updateInventory(spCompnente);
+				// ACTUALIZAMOS EL FOLIO
+				fs.updateFolioVenta(fs.getFolioVenta());
+				//
+				// NO CRAGA EL NOMRE DEL PRODUCTO SEL SUCURSALPRODUCTO
+				for (VentaDetalle ventaDetalle : detalles) {
+					SucursalProducto sp = sps.getSucursalProductoById(ventaDetalle.getSucursalProductoIdSucursalProducto().getIdSucursalProducto());
+					Producto p = sp.getProductoIdProducto();
+					if (p.isEsPaquete()) {
+						List<PaqueteProducto> lpp = pps.getPaqueteProductoById(p);
+						for (PaqueteProducto paquteProduto : lpp) {
+							SucursalProducto spCompnente = sps.getSucursalProductoById(paquteProduto.getProductoIdProducto().getIdProducto());
 
+							spCompnente.setInventario(spCompnente.getInventario() - (paquteProduto.getCantidad() * ventaDetalle.getCantidad()));
+							sps.updateInventory(spCompnente);
+
+							Alert infoAlert = new Alert(AlertType.INFORMATION);
+							infoAlert.setTitle(paquteProduto.getPaqueteIdPaquete().getNombreProducto());
+							infoAlert.setHeaderText("Contiene");
+							infoAlert.setContentText(paquteProduto.getProductoIdProducto().getNombreProducto() + " Cantidad: " + paquteProduto.getCantidad());
+							infoAlert.showAndWait();
+						}
+						// Restar la cantidad correspondiente al paquete
+
+					} else {
+						// 🔹 Si es un producto normal, restamos su stock directamente
+						sp.setInventario(sp.getInventario() - ventaDetalle.getCantidad());
+						sps.updateInventory(sp);
 						Alert infoAlert = new Alert(AlertType.INFORMATION);
-						infoAlert.setTitle(paquteProduto.getPaqueteIdPaquete().getNombreProducto());
-						infoAlert.setHeaderText("Contiene");
-						infoAlert.setContentText(paquteProduto.getProductoIdProducto().getNombreProducto() + " Cantidad: " + paquteProduto.getCantidad());
+						infoAlert.setTitle("Producto");
+						infoAlert.setHeaderText("Que producto se relaciona");
+						infoAlert.setContentText(p.getNombreProducto());
 						infoAlert.showAndWait();
 					}
-					// Restar la cantidad correspondiente al paquete
-
-				} else {
-					// 🔹 Si es un producto normal, restamos su stock directamente
-					sp.setInventario(sp.getInventario() - ventaDetalle.getCantidad());
-					sps.updateInventory(sp);
-					Alert infoAlert = new Alert(AlertType.INFORMATION);
-					infoAlert.setTitle("Producto");
-					infoAlert.setHeaderText("Que producto se relaciona");
-					infoAlert.setContentText(p.getNombreProducto());
-					infoAlert.showAndWait();
 				}
+				tps.printTicket(ventaGuardada);
+				respuesta = was.sendWhatsAppMessage("4341327947", folio);
+				pdfs.createPdf("C:/Users/Sistemas/Documents/" + folio + ".pdf");
+
+				Alert infoAlert = new Alert(AlertType.INFORMATION);
+				infoAlert.setTitle("Whatsapp");
+				infoAlert.setHeaderText("Que es lo que no dice watsappp");
+				infoAlert.setContentText(respuesta);
+				infoAlert.showAndWait();
+				return ventaGuardada;
+			} else {
+				throw new Exception("la fecha no es correcta");
 			}
-			tps.printTicket(ventaGuardada);
-			return ventaGuardada;
 		} catch (
 
 		Exception e) {
