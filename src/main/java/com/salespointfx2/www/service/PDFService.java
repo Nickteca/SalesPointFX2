@@ -39,7 +39,7 @@ public class PDFService {
 			document.close();
 			emailService.sendEmail("isaaclunaavila@gmail.com", "Prueba", "Lo qu elleva el texto mas descriptivo", fileName);
 
-			System.out.println("PDF generado correctamente en: " + fileName);
+			// System.out.println("PDF generado correctamente en: " + fileName);
 		} catch (IOException e) {
 			Alert infoAlert = new Alert(AlertType.ERROR);
 			infoAlert.setTitle("error con el PDF");

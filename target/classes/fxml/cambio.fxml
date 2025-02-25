@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="511.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.salespointfx2.www.controller.CambioController">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="511.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.salespointfx2.www.controller.CambioController">
    <children>
       <AnchorPane prefHeight="200.0" prefWidth="200.0">
          <children>
@@ -21,12 +21,12 @@
                <left>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="5.0" BorderPane.alignment="CENTER">
                      <children>
-                        <Button fx:id="btn20" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="20" VBox.vgrow="ALWAYS" />
-                        <Button fx:id="btn50" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="50" VBox.vgrow="ALWAYS" />
-                        <Button fx:id="btn100" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="100" VBox.vgrow="ALWAYS" />
-                        <Button fx:id="btn200" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="200" VBox.vgrow="ALWAYS" />
-                        <Button fx:id="btn500" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="500" VBox.vgrow="ALWAYS" />
-                        <Button fx:id="btn1000" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="1000" VBox.vgrow="ALWAYS" />
+                        <Button fx:id="btn20" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#agregarBillete" text="20" VBox.vgrow="ALWAYS" />
+                        <Button fx:id="btn50" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#agregarBillete" text="50" VBox.vgrow="ALWAYS" />
+                        <Button fx:id="btn100" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#agregarBillete" text="100" VBox.vgrow="ALWAYS" />
+                        <Button fx:id="btn200" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#agregarBillete" text="200" VBox.vgrow="ALWAYS" />
+                        <Button fx:id="btn500" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#agregarBillete" text="500" VBox.vgrow="ALWAYS" />
+                        <Button fx:id="btn1000" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#agregarBillete" text="1000" VBox.vgrow="ALWAYS" />
                      </children>
                      <BorderPane.margin>
                         <Insets />

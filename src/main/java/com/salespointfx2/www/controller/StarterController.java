@@ -44,21 +44,44 @@ public class StarterController implements Initializable {
 
 	@FXML
 	private MenuItem mItemVentas;
+	@FXML
+	private MenuItem mItemInventario;
+	@FXML
+	private MenuItem mItemConsultaVenta;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 	}
 
+	/* SE ABRE LA GABETA O CAJON DE DINERO */
 	@FXML
 	void abrirCajon(ActionEvent event) {
 
 		tps.abririCajon();
 	}
 
+	/* CONSULTAMOS LA VENT DEL DIA O POR CORTE */
+	@FXML
+	void consultaVenta(ActionEvent event) {
+		loadView("/fxml/ventacorte.fxml");
+		VentaCorteController vcc = context.getBean(VentaCorteController.class);
+	}
+
+	/* ABRIREMOS LA VENTA INTERNA VENTA */
 	@FXML
 	void venta(ActionEvent event) {
 		loadView("/fxml/venta.fxml");
+		VentaController vc = context.getBean(VentaController.class);
+		vc.load();
 
+	}
+
+	/* ABRIREMOS LA VENTA INTERNA INVENTARIO */
+	@FXML
+	void inventario(ActionEvent event) {
+		loadView("/fxml/inventario.fxml");
+		InventarioController ic = context.getBean(InventarioController.class);
+		// vc.load();
 	}
 
 	public Parent load() {
@@ -83,8 +106,6 @@ public class StarterController implements Initializable {
 			AnchorPane view = fxml.load();
 			// BorderPane borderPane = (BorderPane) currentStage.getScene().getRoot();
 			borderPanePrincipal.setCenter(view);
-			VentaController vc = context.getBean(VentaController.class);
-			vc.load();
 
 		} catch (IOException e) {
 			e.printStackTrace();

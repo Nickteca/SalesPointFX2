@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.salespointfx2.www.config.VentaConverter;
 import com.salespointfx2.www.dto.VentaDetalleTabla;
+import com.salespointfx2.www.model.MovimientoCaja;
 import com.salespointfx2.www.model.PaqueteProducto;
 import com.salespointfx2.www.model.Producto;
 import com.salespointfx2.www.model.Sucursal;
@@ -103,14 +104,15 @@ public class VentaService {
 					}
 				}
 				tps.printTicket(ventaGuardada);
-				respuesta = was.sendWhatsAppMessage("4341327947", folio);
-				pdfs.createPdf("C:/Users/Sistemas/Documents/" + folio + ".pdf");
-
-				Alert infoAlert = new Alert(AlertType.INFORMATION);
-				infoAlert.setTitle("Whatsapp");
-				infoAlert.setHeaderText("Que es lo que no dice watsappp");
-				infoAlert.setContentText(respuesta);
-				infoAlert.showAndWait();
+				/*
+				 * respuesta = was.sendWhatsAppMessage("4341327947", folio);
+				 * pdfs.createPdf("C:/Users/Sistemas/Documents/" + folio + ".pdf");
+				 * 
+				 * Alert infoAlert = new Alert(AlertType.INFORMATION);
+				 * infoAlert.setTitle("Whatsapp");
+				 * infoAlert.setHeaderText("Que es lo que no dice watsappp");
+				 * infoAlert.setContentText(respuesta); infoAlert.showAndWait();
+				 */
 				return ventaGuardada;
 			} else {
 				throw new Exception("la fecha no es correcta");
@@ -126,5 +128,23 @@ public class VentaService {
 			return null;
 		}
 
+	}
+
+	public List<Venta> getVentaCorte() {
+		try {
+			MovimientoCaja mc = mcs.getLastMovimientoCaja(ss.getSucursalActive()).get();
+			if (mc.getTipoMovimientoCaja() == 'A') {
+				return vr.findBySucursalIdSucursalAndCreatedAtBetween(ss.getSucursalActive().get(), mcs.getLastMovimientoCaja(ss.getSucursalActive()).get().getCreatedAt(), LocalDateTime.now());
+			} else {
+				return null;
+			}
+		} catch (Exception e) {
+			Alert infoAlert = new Alert(AlertType.ERROR);
+			infoAlert.setTitle("error en vebtas del corte");
+			infoAlert.setHeaderText("Mopsrano las venytas");
+			infoAlert.setContentText(e.getMessage() + " " + e.getCause() + " " + e.getStackTrace());
+			infoAlert.showAndWait();
+			return null;
+		}
 	}
 }

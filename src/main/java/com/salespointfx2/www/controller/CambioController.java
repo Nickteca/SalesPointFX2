@@ -2,14 +2,12 @@ package com.salespointfx2.www.controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.function.UnaryOperator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.salespointfx2.www.config.VentaViewModel;
 import com.salespointfx2.www.dto.VentaDetalleTabla;
-import com.salespointfx2.www.model.Folio;
 import com.salespointfx2.www.service.VentaService;
 
 import javafx.collections.ObservableList;
@@ -17,11 +15,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
@@ -131,6 +127,13 @@ public class CambioController implements Initializable {
 				});
 			}
 		});
+	}
+
+	@FXML
+	void agregarBillete(ActionEvent event) {
+		Button billete = (Button) event.getSource();
+		textEfectivo.setText(billete.getText());
+		updateCambio();
 	}
 
 	@FXML

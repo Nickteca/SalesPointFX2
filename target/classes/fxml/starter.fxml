@@ -67,9 +67,10 @@
                               </MenuItem>
                         </items>
                       </Menu>
-                      <Menu mnemonicParsing="false" text="Edit">
+                      <Menu mnemonicParsing="false" text="Consulta">
                         <items>
-                          <MenuItem mnemonicParsing="false" text="Delete" />
+                          <MenuItem fx:id="mItemInventario" mnemonicParsing="false" onAction="#inventario" text="Inventario/Precio" />
+                              <MenuItem fx:id="mItemConsultaVenta" mnemonicParsing="false" onAction="#consultaVenta" text="Venta" />
                         </items>
                       </Menu>
                       <Menu mnemonicParsing="false" text="Help">

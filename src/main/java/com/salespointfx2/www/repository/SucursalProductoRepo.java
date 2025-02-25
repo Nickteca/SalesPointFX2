@@ -17,5 +17,7 @@ public interface SucursalProductoRepo extends JpaRepository<SucursalProducto, In
 	List<SucursalProducto> findBySucursalIdSucursalAndVendibleTrueAndCategoriaIdCategoria(Sucursal sucursal, Categoria categoria);
 
 	@Query("SELECT sp FROM SucursalProducto sp JOIN FETCH sp.productoIdProducto WHERE sp.idSucursalProducto = :id")
-    Optional<SucursalProducto> findByIdWithProducto(@Param("id") int id);
+	Optional<SucursalProducto> findByIdWithProducto(@Param("id") int id);
+
+	List<SucursalProducto> findBySucursalIdSucursalAndProductoIdProductoEsPaqueteFalse(Sucursal sucursal);
 }
