@@ -26,13 +26,13 @@
          <center>
             <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                <children>
-                  <TableView fx:id="tViewVentaCorte" layoutX="412.0" layoutY="253.0" prefHeight="705.0" prefWidth="1024.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <TableView fx:id="tViewVentaCorte" layoutX="412.0" layoutY="253.0" prefHeight="705.0" prefWidth="1024.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
                     <columns>
                       <TableColumn fx:id="columnId" editable="false" prefWidth="123.0" resizable="false" sortable="false" text="ID" />
                       <TableColumn fx:id="columnNombreproducto" editable="false" prefWidth="483.0" resizable="false" sortable="false" text="PRODUCTO" />
-                        <TableColumn fx:id="columnUnidades" editable="false" prefWidth="153.0" resizable="false" sortable="false" text="UNIDADES" />
-                        <TableColumn fx:id="columnPrecio" editable="false" prefWidth="105.0" resizable="false" sortable="false" text="PRECIO" />
-                        <TableColumn fx:id="columnSubtotal" editable="false" prefWidth="159.0" resizable="false" sortable="false" text="SUBTOTAL" />
+                        <TableColumn fx:id="columnUnidades" editable="false" prefWidth="153.0" resizable="false" sortable="false" style="-fx-alignment: center;" text="UNIDADES" />
+                        <TableColumn fx:id="columnPrecio" editable="false" prefWidth="88.0" resizable="false" sortable="false" style="-fx-alignment: center;" text="PRECIO" />
+                        <TableColumn fx:id="columnSubtotal" editable="false" prefWidth="133.0" resizable="false" sortable="false" style="-fx-alignment: center;" text="SUBTOTAL" />
                     </columns>
                   </TableView>
                </children>

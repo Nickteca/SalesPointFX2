@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.salespointfx2.www.model.Venta;
 import com.salespointfx2.www.model.VentaDetalle;
 import com.salespointfx2.www.repository.VentaDetalleRepo;
 
@@ -17,5 +18,9 @@ public class VentaDetalleService {
 	@Transactional
 	public List<VentaDetalle> saveAll(List<VentaDetalle> vd) {
 		return vdr.saveAll(vd);
+	}
+
+	public List<VentaDetalle> getVentaDetalleXCorte(Venta venta) {
+		return vdr.findByVentaIdVenta(venta);
 	}
 }

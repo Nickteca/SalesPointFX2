@@ -1,6 +1,7 @@
 package com.salespointfx2.www.service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -133,15 +134,18 @@ public class VentaService {
 	public List<Venta> getVentaCorte() {
 		try {
 			MovimientoCaja mc = mcs.getLastMovimientoCaja(ss.getSucursalActive()).get();
+			List<Venta> lv = new ArrayList<Venta>();
 			if (mc.getTipoMovimientoCaja() == 'A') {
-				return vr.findBySucursalIdSucursalAndCreatedAtBetween(ss.getSucursalActive().get(), mcs.getLastMovimientoCaja(ss.getSucursalActive()).get().getCreatedAt(), LocalDateTime.now());
+				lv = vr.findBySucursalIdSucursalAndCreatedAtBetween(ss.getSucursalActive().get(), mcs.getLastMovimientoCaja(ss.getSucursalActive()).get().getCreatedAt(), LocalDateTime.now());
+
+				return lv;
 			} else {
 				return null;
 			}
 		} catch (Exception e) {
 			Alert infoAlert = new Alert(AlertType.ERROR);
-			infoAlert.setTitle("error en vebtas del corte");
-			infoAlert.setHeaderText("Mopsrano las venytas");
+			infoAlert.setTitle("Error Venta Service");
+			infoAlert.setHeaderText("Error en la consulat Venta por corte");
 			infoAlert.setContentText(e.getMessage() + " " + e.getCause() + " " + e.getStackTrace());
 			infoAlert.showAndWait();
 			return null;
