@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane prefHeight="500.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.salespointfx2.www.controller.GastoController">
+<AnchorPane prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.salespointfx2.www.controller.GastoController">
    <children>
       <BorderPane layoutX="370.0" layoutY="241.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
@@ -24,37 +26,56 @@
             </AnchorPane>
          </top>
          <center>
-            <AnchorPane BorderPane.alignment="CENTER">
+            <AnchorPane prefWidth="660.0" BorderPane.alignment="CENTER">
                <children>
                   <AnchorPane layoutX="137.0" layoutY="14.0" prefHeight="437.0" prefWidth="500.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <Label layoutX="14.0" layoutY="15.0" text="SERVICIO:">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </Label>
-                        <ChoiceBox layoutX="111.0" layoutY="12.0" prefHeight="25.0" prefWidth="278.0" />
-                        <Label layoutX="14.0" layoutY="48.0" text="CANTIDAD:">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </Label>
-                        <TextField editable="false" layoutX="111.0" layoutY="43.0" promptText="\$0.0">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </TextField>
-                        <Label layoutX="14.0" layoutY="83.0" text="FECHA:">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </Label>
-                        <DatePicker layoutX="111.0" layoutY="80.0" />
+                        <TableView layoutX="272.0" layoutY="253.0" prefHeight="705.0" prefWidth="632.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                          <columns>
+                            <TableColumn prefWidth="75.0" text="ID" />
+                            <TableColumn prefWidth="313.0" text="GASTO" />
+                              <TableColumn prefWidth="113.0" text="MONTO" />
+                              <TableColumn prefWidth="121.0" text="FECHA" />
+                          </columns>
+                        </TableView>
                      </children>
                   </AnchorPane>
                </children>
             </AnchorPane>
          </center>
+         <left>
+            <AnchorPane BorderPane.alignment="CENTER">
+               <children>
+                  <AnchorPane layoutX="-7.0" layoutY="132.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <Label layoutX="40.0" layoutY="17.0" text="SERVICIO:" AnchorPane.leftAnchor="14.0">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <ChoiceBox fx:id="cBoxServicio" layoutX="137.0" layoutY="14.0" prefHeight="25.0" prefWidth="278.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="14.0" />
+                        <Label layoutX="40.0" layoutY="51.0" text="CANTIDAD:" AnchorPane.leftAnchor="14.0">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="textCantidad" editable="false" layoutX="137.0" layoutY="46.0" promptText="\$0.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="14.0">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </TextField>
+                        <Label layoutX="40.0" layoutY="85.0" text="FECHA:" AnchorPane.leftAnchor="14.0">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <DatePicker fx:id="dateFecha" layoutX="137.0" layoutY="82.0" promptText="2025/10/02" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="14.0" />
+                        <Button layoutX="281.0" layoutY="115.0" mnemonicParsing="false" text="Registrar Gasto" />
+                     </children>
+                  </AnchorPane>
+               </children>
+            </AnchorPane>
+         </left>
       </BorderPane>
    </children>
 </AnchorPane>

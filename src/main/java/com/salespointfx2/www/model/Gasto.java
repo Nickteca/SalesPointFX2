@@ -14,11 +14,13 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "gasto", uniqueConstraints = { @UniqueConstraint(columnNames = "idGastos") })
@@ -44,4 +46,10 @@ public class Gasto {
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "gastoIdGastos")
 	private List<GastoSucursal> gastoSucursalList;
+
+	@Override
+	public String toString() {
+		return descripcionGasto;
+	}
+
 }

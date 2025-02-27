@@ -1,5 +1,6 @@
 package com.salespointfx2.www.model;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Basic;
@@ -30,13 +31,17 @@ public class GastoSucursal {
 	private Short idGastoSucursal;
 
 	@Basic(optional = false)
+	@Column(nullable = false, columnDefinition = "DATE")
+	private LocalDate fechaGasto;
+
+	@Basic(optional = false)
 	@Column(nullable = false)
-	private LocalDateTime fechaGasto;
+	private LocalDateTime createdAt;
 
 	// @Max(value=?) @Min(value=?)//if you know range of your decimal fields
 	// consider using these annotations to enforce field validation
 	@Basic(optional = false)
-	@Column(name = "monto_gasto")
+	@Column(nullable = false)
 	private float montoGasto;
 
 	@JoinColumn(name = "gastoIdGastos", referencedColumnName = "idGastos")
@@ -46,4 +51,5 @@ public class GastoSucursal {
 	@JoinColumn(name = "sucursalIdSucursal", referencedColumnName = "idSucursal")
 	@ManyToOne(optional = false)
 	private Sucursal sucursalIdSucursal;
+
 }
