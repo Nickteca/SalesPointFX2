@@ -48,6 +48,8 @@ public class StarterController implements Initializable {
 	private MenuItem mItemInventario;
 	@FXML
 	private MenuItem mItemConsultaVenta;
+	 @FXML
+	    private MenuItem mItemPagoServicio;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -83,6 +85,10 @@ public class StarterController implements Initializable {
 		InventarioController ic = context.getBean(InventarioController.class);
 		// vc.load();
 	}
+	@FXML
+    void pagoServicio(ActionEvent event) {
+
+    }
 
 	public Parent load() {
 		Parent root;

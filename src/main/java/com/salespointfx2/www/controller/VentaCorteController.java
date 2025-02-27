@@ -106,7 +106,8 @@ public class VentaCorteController implements Initializable {
 							float precio = vd.getPrecio();
 							int cantidad = vd.getCantidad();
 							float subtotal = vd.getSubTotal();
-							String nombreProducto = vd.getSucursalProductoIdSucursalProducto().getProductoIdProducto().getNombreProducto();
+							String nombreProducto = vd.getSucursalProductoIdSucursalProducto().getProductoIdProducto()
+									.getNombreProducto();
 
 							if (ventaMap.containsKey(idSucursalProducto)) {
 								// Si el producto ya existe, sumamos las unidades y el subtotal
