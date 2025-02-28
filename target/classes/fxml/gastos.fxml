@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.salespointfx2.www.controller.GastoController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.salespointfx2.www.controller.GastoController">
    <children>
       <BorderPane layoutX="370.0" layoutY="241.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
@@ -30,12 +30,12 @@
                <children>
                   <AnchorPane layoutX="137.0" layoutY="14.0" prefHeight="437.0" prefWidth="500.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <TableView layoutX="272.0" layoutY="253.0" prefHeight="705.0" prefWidth="632.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <TableView fx:id="tViewGastos" layoutX="272.0" layoutY="253.0" prefHeight="705.0" prefWidth="632.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                           <columns>
-                            <TableColumn prefWidth="75.0" text="ID" />
-                            <TableColumn prefWidth="313.0" text="GASTO" />
-                              <TableColumn prefWidth="113.0" text="MONTO" />
-                              <TableColumn prefWidth="121.0" text="FECHA" />
+                            <TableColumn fx:id="columnId" prefWidth="75.0" text="ID" />
+                            <TableColumn fx:id="columnGasto" prefWidth="313.0" text="GASTO" />
+                              <TableColumn fx:id="columnMonto" prefWidth="113.0" text="MONTO" />
+                              <TableColumn fx:id="columnFecha" prefWidth="121.0" text="FECHA" />
                           </columns>
                         </TableView>
                      </children>
@@ -53,13 +53,13 @@
                               <Font size="14.0" />
                            </font>
                         </Label>
-                        <ChoiceBox fx:id="cBoxServicio" layoutX="137.0" layoutY="14.0" prefHeight="25.0" prefWidth="278.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="14.0" />
+                        <ChoiceBox fx:id="cBoxServicio" layoutX="137.0" layoutY="14.0" prefHeight="25.0" prefWidth="176.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="14.0" />
                         <Label layoutX="40.0" layoutY="51.0" text="CANTIDAD:" AnchorPane.leftAnchor="14.0">
                            <font>
                               <Font size="14.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="textCantidad" editable="false" layoutX="137.0" layoutY="46.0" promptText="\$0.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="14.0">
+                        <TextField fx:id="textCantidad" layoutX="137.0" layoutY="46.0" promptText="\$0.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="14.0">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -69,8 +69,8 @@
                               <Font size="14.0" />
                            </font>
                         </Label>
-                        <DatePicker fx:id="dateFecha" layoutX="137.0" layoutY="82.0" promptText="2025/10/02" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="14.0" />
-                        <Button layoutX="281.0" layoutY="115.0" mnemonicParsing="false" text="Registrar Gasto" />
+                        <DatePicker fx:id="dateFecha" editable="false" layoutX="137.0" layoutY="82.0" promptText="2025/10/02" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="14.0" />
+                        <Button fx:id="btnRegistrar" layoutX="179.0" layoutY="114.0" mnemonicParsing="false" onAction="#btnRegistrarGasto" text="Registrar Gasto" />
                      </children>
                   </AnchorPane>
                </children>

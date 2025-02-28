@@ -52,4 +52,16 @@ public class GastoSucursal {
 	@ManyToOne(optional = false)
 	private Sucursal sucursalIdSucursal;
 
+	public GastoSucursal(LocalDate fechaGasto, float montoGasto, Gasto gastoIdGastos,
+			Sucursal sucursalIdSucursal) {
+		super();
+		this.fechaGasto = fechaGasto;
+		this.createdAt = LocalDateTime.now();
+		this.montoGasto = montoGasto;
+		this.gastoIdGastos = gastoIdGastos;
+		this.sucursalIdSucursal = sucursalIdSucursal;
+	}
+	
+	
+
 }
