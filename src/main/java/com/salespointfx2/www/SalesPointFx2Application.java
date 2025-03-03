@@ -1,5 +1,8 @@
 package com.salespointfx2.www;
 
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import org.springframework.boot.SpringApplication;
@@ -12,8 +15,11 @@ import com.salespointfx2.www.service.MovimientoCajaService;
 import com.salespointfx2.www.service.SucursalService;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 
 @SpringBootApplication
@@ -24,11 +30,33 @@ public class SalesPointFx2Application extends Application {
 	private static MovimientoCajaService mcs;
 	private static SucursalService ss;
 
+	private static ServerSocket lockSocket;
+
 	public static void main(String[] args) {
-		context = SpringApplication.run(SalesPointFx2Application.class, args);
-		mcs = context.getBean(MovimientoCajaService.class);
-		ss = context.getBean(SucursalService.class);
-		launch();
+		if (!isAlreadyRunning()) {
+			context = SpringApplication.run(SalesPointFx2Application.class, args);
+			mcs = context.getBean(MovimientoCajaService.class);
+			ss = context.getBean(SucursalService.class);
+			launch();
+		} else {
+			Platform.runLater(() -> {
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("Error");
+				alert.setHeaderText("La aplicación ya está en ejecución");
+				alert.setContentText("Solo se permite una instancia de la aplicación.");
+				alert.showAndWait();
+				Platform.exit(); // Cierra la aplicación
+			});
+		}
+	}
+
+	private static boolean isAlreadyRunning() {
+		try {
+			lockSocket = new ServerSocket(9999); // Usa un puerto único
+			return false;
+		} catch (IOException e) {
+			return true;
+		}
 	}
 
 	@Override
@@ -37,10 +65,24 @@ public class SalesPointFx2Application extends Application {
 		// EN LUGAR DE USAR LOS IF SE USA ESTE TIPO DE OPERACION POR SER OPTIONAL<>
 		ss.getSucursalActive().flatMap(sucursal -> mcs.getLastMovimientoCaja(Optional.of(sucursal))) // Pasamos un
 																										// Optional<Sucursal>
-				.filter(mc -> mc.getTipoMovimientoCaja() == 'A') // Filtramos según el tipo de movimiento
+				/*
+				 * .filter(mc -> mc.getTipoMovimientoCaja() == 'A') // Filtramos según el tipo
+				 * de movimiento .filter(mc -> mc.getCreatedAt().isBefore(LocalDateTime.now()))
+				 */
 				.ifPresentOrElse(mc -> {
-					// Si el tipo de movimiento es 'A', mostramos la ventana
-					mostrarPrincipal(primaryStage);
+					if (mc.getTipoMovimientoCaja() == 'A') {
+						if (mc.getCreatedAt().isBefore(LocalDateTime.now())) {
+							mostrarPrincipal(primaryStage);
+						} else {
+							Alert info = new Alert(AlertType.WARNING);
+							info.setTitle("SalespintFx Warning");
+							info.setHeaderText("Al parecer no coincide la fecha");
+							info.setContentText("Revisa la fecha. no esta coincidiendo con la apertura de la caja");
+							info.show();
+						}
+					} else {
+						abiriCaja();
+					}
 
 				}, () -> {
 					// Si el tipo de movimiento no es 'A', realizamos una acción alternativa
@@ -57,9 +99,9 @@ public class SalesPointFx2Application extends Application {
 			Parent starter = sc.load();
 			primaryStage = new Stage();
 			primaryStage.setScene(new Scene(starter));
-			//primaryStage.setMaximized(true);
+			// primaryStage.setMaximized(true);
 			primaryStage.setTitle("SalespointFx");
-			primaryStage.setMinWidth(1024);  // Mínimo ancho permitido
+			primaryStage.setMinWidth(1024); // Mínimo ancho permitido
 			primaryStage.setMinHeight(768); // Mínimo alto permitido
 			primaryStage.showAndWait();
 		} catch (Exception e) {
