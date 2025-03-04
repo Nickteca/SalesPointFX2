@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="559.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.salespointfx2.www.controller.RecoleccionController">
+   <children>
+      <BorderPane layoutX="200.0" layoutY="91.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <top>
+            <AnchorPane BorderPane.alignment="CENTER">
+               <children>
+                  <Label alignment="CENTER" layoutX="286.0" layoutY="92.0" text="RECOLECCION" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+         </top>
+         <center>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <children>
+                  <GridPane alignment="CENTER" layoutX="200.0" layoutY="149.0" prefHeight="387.0" prefWidth="600.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
+                    <columnConstraints>
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <Label text="DENOMINACION">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                        </Label>
+                        <Label text="CANTIDAD" GridPane.columnIndex="1">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                        </Label>
+                        <Label text="SUBTOTAL" GridPane.columnIndex="2">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                        </Label>
+                        <Label text="\$1000" GridPane.rowIndex="1">
+                           <font>
+                              <Font name="System Bold Italic" size="14.0" />
+                           </font>
+                        </Label>
+                        <Label text="\$500" GridPane.rowIndex="2">
+                           <font>
+                              <Font name="System Bold Italic" size="14.0" />
+                           </font>
+                        </Label>
+                        <Label text="\$200" GridPane.rowIndex="3">
+                           <font>
+                              <Font name="System Bold Italic" size="14.0" />
+                           </font>
+                        </Label>
+                        <Label text="\$100" GridPane.rowIndex="4">
+                           <font>
+                              <Font name="System Bold Italic" size="14.0" />
+                           </font>
+                        </Label>
+                        <Label text="\$50" GridPane.rowIndex="5">
+                           <font>
+                              <Font name="System Bold Italic" size="14.0" />
+                           </font>
+                        </Label>
+                        <Label text="\$20" GridPane.rowIndex="6">
+                           <font>
+                              <Font name="System Bold Italic" size="14.0" />
+                           </font>
+                        </Label>
+                        <Label text="\$10" GridPane.rowIndex="7">
+                           <font>
+                              <Font name="System Bold Italic" size="14.0" />
+                           </font>
+                        </Label>
+                        <Label text="\$5" GridPane.rowIndex="8">
+                           <font>
+                              <Font name="System Bold Italic" size="14.0" />
+                           </font>
+                        </Label>
+                        <Label text="\$2" GridPane.rowIndex="9">
+                           <font>
+                              <Font name="System Bold Italic" size="14.0" />
+                           </font>
+                        </Label>
+                        <Label text="\$1" GridPane.rowIndex="10">
+                           <font>
+                              <Font name="System Bold Italic" size="14.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="text1000" alignment="CENTER" onKeyReleased="#cantidad" promptText="0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </TextField>
+                        <TextField fx:id="text500" alignment="CENTER" onKeyReleased="#cantidad" promptText="0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </TextField>
+                        <TextField fx:id="text200" alignment="CENTER" onKeyReleased="#cantidad" promptText="0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </TextField>
+                        <TextField fx:id="text100" alignment="CENTER" onKeyReleased="#cantidad" promptText="0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </TextField>
+                        <TextField fx:id="text50" alignment="CENTER" onKeyReleased="#cantidad" promptText="0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </TextField>
+                        <TextField fx:id="text20" alignment="CENTER" onKeyReleased="#cantidad" promptText="0" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </TextField>
+                        <TextField fx:id="text10" alignment="CENTER" onKeyReleased="#cantidad" promptText="0" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </TextField>
+                        <TextField fx:id="text5" alignment="CENTER" onKeyReleased="#cantidad" promptText="0" GridPane.columnIndex="1" GridPane.rowIndex="8">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </TextField>
+                        <TextField fx:id="text2" alignment="CENTER" onKeyReleased="#cantidad" promptText="0" GridPane.columnIndex="1" GridPane.rowIndex="9">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </TextField>
+                        <TextField fx:id="text1" alignment="CENTER" onKeyReleased="#cantidad" promptText="0" GridPane.columnIndex="1" GridPane.rowIndex="10">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </TextField>
+                        <Label fx:id="lbl1000" text="0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                        <Label fx:id="lbl500" text="0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                        <Label fx:id="lbl200" text="0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                        <Label fx:id="lbl100" text="0" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                        <Label fx:id="lbl50" text="0" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                        <Label fx:id="lbl20" text="0" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+                        <Label fx:id="lbl10" text="0" GridPane.columnIndex="2" GridPane.rowIndex="7" />
+                        <Label fx:id="lbl5" text="0" GridPane.columnIndex="2" GridPane.rowIndex="8" />
+                        <Label fx:id="lbl2" text="0" GridPane.columnIndex="2" GridPane.rowIndex="9" />
+                        <Label fx:id="lbl1" text="0" GridPane.columnIndex="2" GridPane.rowIndex="10" />
+                     </children>
+                  </GridPane>
+               </children>
+            </AnchorPane>
+         </center>
+         <bottom>
+            <AnchorPane BorderPane.alignment="CENTER">
+               <children>
+                  <Label fx:id="lblTotal" alignment="CENTER" layoutX="405.0" layoutY="92.0" prefHeight="20.0" prefWidth="181.0" text="TOTAL" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="btnRecoleccion" layoutX="244.0" layoutY="14.0" mnemonicParsing="false" onAction="#guardarRecoleccion" text="Guardar Recoleccion" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="231.0" AnchorPane.topAnchor="14.0">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Button>
+               </children>
+            </AnchorPane>
+         </bottom>
+      </BorderPane>
+   </children>
+</AnchorPane>

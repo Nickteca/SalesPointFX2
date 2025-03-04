@@ -50,6 +50,8 @@ public class StarterController implements Initializable {
 	private MenuItem mItemConsultaVenta;
 	@FXML
 	private MenuItem mItemPagoServicio;
+	@FXML
+	private MenuItem mItemRecoleccion;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -90,6 +92,13 @@ public class StarterController implements Initializable {
 	void pagoServicio(ActionEvent event) {
 		loadView("/fxml/gastos.fxml");
 		GastoController ic = context.getBean(GastoController.class);
+	}
+
+	@FXML
+	void recoleccion(ActionEvent event) {
+		loadView("/fxml/recoleccion.fxml");
+		RecoleccionController rc = context.getBean(RecoleccionController.class);
+		// vc.load();
 	}
 
 	public Parent load() {

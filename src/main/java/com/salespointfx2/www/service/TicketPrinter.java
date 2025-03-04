@@ -108,9 +108,9 @@ public class TicketPrinter {
 			escpos.close();
 
 		} catch (Exception e) {
-			Alert infoAlert = new Alert(AlertType.INFORMATION);
+			Alert infoAlert = new Alert(AlertType.ERROR);
 			infoAlert.setTitle("Problema de impresora");
-			infoAlert.setHeaderText("Alun detalle pasa con la impresosar");
+			infoAlert.setHeaderText("Alun detalle pasa con la impresosar, pro se registro la venta");
 			infoAlert.setContentText(e.getMessage() + " " + e.getCause());
 			infoAlert.showAndWait();
 		}
@@ -135,7 +135,11 @@ public class TicketPrinter {
 
 			escpos.close();
 		} catch (Exception e) {
-			// TODO: handle exception
+			Alert error = new Alert(AlertType.ERROR);
+			error.setTitle("Error Abrir Cajon");
+			error.setHeaderText("Al parecer no hay impresora por defaul o no esta encendida");
+			error.setContentText(e.getMessage() + " \n" + e.getCause());
+			error.show();
 		}
 	}
 

@@ -87,6 +87,9 @@ public class Sucursal {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "sucursalIdSucursal")
 	private List<Folio> folios;
 
+	@OneToMany(mappedBy = "sucursalIdSucursal")
+	private List<Recoleccion> recoleccionList;
+
 	public Sucursal(String nombreSucursal, String calleSucursal, String ciudadSucursal, String estadoSucursal, String telefonoSucursal, boolean estatusSucursal, Empresa empresaIdEmpresa) {
 		super();
 		this.nombreSucursal = nombreSucursal;
