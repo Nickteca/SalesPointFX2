@@ -1,6 +1,7 @@
 package com.salespointfx2.www.service;
 
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.print.PrintService;
@@ -14,6 +15,8 @@ import com.github.anastaciocintra.escpos.EscPosConst;
 import com.github.anastaciocintra.escpos.Style;
 import com.github.anastaciocintra.escpos.barcode.QRCode;
 import com.github.anastaciocintra.output.PrinterOutputStream;
+import com.salespointfx2.www.model.Recoleccion;
+import com.salespointfx2.www.model.RecoleccionBillete;
 import com.salespointfx2.www.model.SucursalProducto;
 import com.salespointfx2.www.model.Venta;
 import com.salespointfx2.www.model.VentaDetalle;
@@ -140,6 +143,73 @@ public class TicketPrinter {
 			error.setHeaderText("Al parecer no hay impresora por defaul o no esta encendida");
 			error.setContentText(e.getMessage() + " \n" + e.getCause());
 			error.show();
+		}
+	}
+
+	public void imprimirRecoleccion(Recoleccion r) {
+		try {
+			PrintService defaultPrintService = PrintServiceLookup.lookupDefaultPrintService();
+
+			if (defaultPrintService == null) {
+				System.out.println("No hay una impresora predeterminada configurada.");
+				throw new Exception("No hay impresora pero se registro la venta");
+			}
+
+			// Crear el stream de la impresora
+			PrinterOutputStream printerOutputStream = new PrinterOutputStream(defaultPrintService);
+			EscPos escpos = new EscPos(printerOutputStream);
+
+			// 🔹 ESTILO: Título (Nombre de la empresa)
+			Style titleStyle = new Style().setFontSize(Style.FontSize._2, Style.FontSize._2).setJustification(EscPosConst.Justification.Center);
+
+			// 🔹 ESTILO: Subtítulo (Sucursal y dirección)
+			Style subtitleStyle = new Style().setFontSize(Style.FontSize._1, Style.FontSize._1).setJustification(EscPosConst.Justification.Center);
+
+			// 🔹 ESTILO: Encabezado de productos
+			Style headerStyle = new Style().setBold(true).setFontSize(Style.FontSize._1, Style.FontSize._1).setJustification(EscPosConst.Justification.Left_Default);
+
+			// 🔹 ESTILO: Texto normal para los productos
+			Style productStyle = new Style().setFontSize(Style.FontSize._1, Style.FontSize._1).setJustification(EscPosConst.Justification.Left_Default);
+
+			// 🔹 ESTILO: Total (Negrita y tamaño grande)
+			Style totalStyle = new Style().setBold(true).setFontSize(Style.FontSize._2, Style.FontSize._2).setJustification(EscPosConst.Justification.Right);
+
+			//
+			Style fontA = new Style().setFontName(Style.FontName.Font_A_Default) // Usa Font A (normal)
+					.setFontSize(Style.FontSize._1, Style.FontSize._1);
+
+			Style fontB = new Style().setFontName(Style.FontName.Font_B).setBold(true); // Usa Font B (más pequeño)
+
+			// 🏪 IMPRIMIR ENCABEZADO
+			escpos.writeLF(titleStyle, r.getSucursalIdSucursal().getEmpresaIdEmpresa().getNombreEmpresa());
+			escpos.writeLF(subtitleStyle, r.getSucursalIdSucursal().getNombreSucursal());
+			escpos.writeLF(subtitleStyle, r.getSucursalIdSucursal().getCalleSucursal() + " " + r.getSucursalIdSucursal().getCiudadSucursal() + " " + r.getSucursalIdSucursal().getEstadoSucursal());
+
+			escpos.writeLF(headerStyle, String.format("%-24s %5s %8s", "Billete", "Cantidad", "subtotal"));
+			escpos.writeLF(fontB, "----------------------------------------------------------------");
+			List<RecoleccionBillete> lrb = r.getRecoleccionBilleteList();
+			lrb.sort(Comparator.comparing(RecoleccionBillete::getBillete).reversed());
+			for (RecoleccionBillete rb : lrb) {
+				String line = String.format("%-20s %10s %10s", rb.getBillete(), rb.getCantidad(), rb.getSubtotal());
+				escpos.writeLF(line);
+			}
+			escpos.writeLF(fontB, "----------------------------------------------------------------");
+			escpos.writeLF(headerStyle.setBold(true), String.format("%-22s %5s %8s %8s", "", "", "Total", "$" + String.format("%,.0f", r.getTotalRecoleccion())));
+
+			// Cortar papel y cerrar conexión
+			escpos.feed(5);
+			escpos.cut(EscPos.CutMode.FULL);
+
+			escpos.close();
+
+		} catch (Exception e) {
+			Alert infoAlert = new Alert(AlertType.ERROR);
+			infoAlert.setTitle("Problema de impresora");
+			infoAlert.setHeaderText("Alun detalle pasa con la impresosar, Se registro la recolecion pero no saco ticket");
+			infoAlert.setContentText(e.getMessage() + " " + e.getCause());
+			infoAlert.showAndWait();
+		} finally {
+
 		}
 	}
 

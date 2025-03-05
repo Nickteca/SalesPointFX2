@@ -8,8 +8,10 @@ import java.util.ResourceBundle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.salespointfx2.www.model.Recoleccion;
 import com.salespointfx2.www.model.RecoleccionBillete;
 import com.salespointfx2.www.service.RecoleccionService;
+import com.salespointfx2.www.service.TicketPrinter;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -26,6 +28,8 @@ import javafx.scene.input.KeyEvent;
 public class RecoleccionController implements Initializable {
 	@Autowired
 	private RecoleccionService rs;
+	@Autowired
+	private TicketPrinter tp;
 
 	private RecoleccionBillete rb;
 
@@ -148,23 +152,28 @@ public class RecoleccionController implements Initializable {
 	@FXML
 	void guardarRecoleccion(ActionEvent event) {
 		try {
-			List<RecoleccionBillete> lrb = new ArrayList<>();
-			for (TextField textField : new TextField[] { text1, text2, text5, text10, text20, text50, text100, text200,
-					text500, text1000 }) {
-				String id = textField.getId().replaceAll("text", ""); // Extraer el billete (ejemplo: "1000")
-				int billete = Integer.parseInt(id);
-				int cantidad = textField.getText().isEmpty() ? 0 : Integer.parseInt(textField.getText());
-				int subtotal = billete * cantidad;
+			if (Float.parseFloat(lblTotal.getText()) > 0) {
+				List<RecoleccionBillete> lrb = new ArrayList<>();
+				for (TextField textField : new TextField[] { text1, text2, text5, text10, text20, text50, text100, text200, text500, text1000 }) {
+					String id = textField.getId().replaceAll("text", ""); // Extraer el billete (ejemplo: "1000")
+					int billete = Integer.parseInt(id);
+					int cantidad = textField.getText().isEmpty() ? 0 : Integer.parseInt(textField.getText());
+					int subtotal = billete * cantidad;
 
-				if (cantidad > 0) { // Solo agregar si hay billetes
-					lrb.add(new RecoleccionBillete((short) billete, (short) cantidad));
+					if (cantidad > 0) { // Solo agregar si hay billetes
+						lrb.add(new RecoleccionBillete((short) billete, (short) cantidad));
 
+					}
 				}
-			}
-			if (rs.saveRecoleccion(lrb, Float.parseFloat(lblTotal.getText())) != null) {
-				limpiarCampos();
+				Recoleccion r = rs.saveRecoleccion(lrb, Float.parseFloat(lblTotal.getText()));
+				if (r != null) {
+					limpiarCampos();
+					tp.imprimirRecoleccion(r);
+				} else {
+					throw new Exception("no se registro");
+				}
 			} else {
-				throw new Exception("no se registro");
+				throw new Exception("No hay cantidades");
 			}
 		} catch (Exception e) {
 			Alert error = new Alert(AlertType.ERROR);
