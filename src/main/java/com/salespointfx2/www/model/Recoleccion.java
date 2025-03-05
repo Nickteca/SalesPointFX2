@@ -15,6 +15,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,7 +24,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(indexes = { @Index(name = "creado", columnList = "createdAt") })
+@Table(indexes = {
+		@Index(name = "creado", columnList = "createdAt") }, uniqueConstraints = @UniqueConstraint(columnNames = {
+				"idRecoleccion","createdAt" }))
 public class Recoleccion implements Serializable {
 	/**
 	 * 
@@ -31,7 +34,7 @@ public class Recoleccion implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(nullable = false, unique = true)
+	@Column(nullable = false)
 	private int idRecoleccion;
 
 	@Column(nullable = false)

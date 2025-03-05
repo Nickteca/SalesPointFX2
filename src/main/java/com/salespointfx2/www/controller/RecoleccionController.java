@@ -149,7 +149,8 @@ public class RecoleccionController implements Initializable {
 	void guardarRecoleccion(ActionEvent event) {
 		try {
 			List<RecoleccionBillete> lrb = new ArrayList<>();
-			for (TextField textField : new TextField[] { text1, text2, text5, text10, text20, text50, text100, text200, text500, text1000 }) {
+			for (TextField textField : new TextField[] { text1, text2, text5, text10, text20, text50, text100, text200,
+					text500, text1000 }) {
 				String id = textField.getId().replaceAll("text", ""); // Extraer el billete (ejemplo: "1000")
 				int billete = Integer.parseInt(id);
 				int cantidad = textField.getText().isEmpty() ? 0 : Integer.parseInt(textField.getText());
@@ -157,10 +158,12 @@ public class RecoleccionController implements Initializable {
 
 				if (cantidad > 0) { // Solo agregar si hay billetes
 					lrb.add(new RecoleccionBillete((short) billete, (short) cantidad));
-				}
 
+				}
 			}
-			if (rs.saveRecoleccion(lrb, Float.parseFloat(lblTotal.getText())) == null) {
+			if (rs.saveRecoleccion(lrb, Float.parseFloat(lblTotal.getText())) != null) {
+				limpiarCampos();
+			} else {
 				throw new Exception("no se registro");
 			}
 		} catch (Exception e) {
@@ -245,5 +248,29 @@ public class RecoleccionController implements Initializable {
 		default:
 			break;
 		}
+	}
+
+	private void limpiarCampos() {
+		text1.setText("");
+		text2.setText("");
+		text5.setText("");
+		text10.setText("");
+		text20.setText("");
+		text50.setText("");
+		text100.setText("");
+		text200.setText("");
+		text500.setText("");
+		text1000.setText("");
+		lbl1.setText("0");
+		lbl2.setText("0");
+		lbl5.setText("0");
+		lbl10.setText("0");
+		lbl20.setText("0");
+		lbl50.setText("0");
+		lbl100.setText("0");
+		lbl200.setText("0");
+		lbl500.setText("0");
+		lbl1000.setText("0");
+		calcularTotal();
 	}
 }
