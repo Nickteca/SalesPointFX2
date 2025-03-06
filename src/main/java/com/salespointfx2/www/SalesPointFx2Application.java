@@ -86,7 +86,11 @@ public class SalesPointFx2Application extends Application {
 
 				}, () -> {
 					// Si el tipo de movimiento no es 'A', realizamos una acción alternativa
-					System.out.println("El tipo de movimiento no es 'A'. Realizando otra acción.");
+					Alert alerta = new Alert(AlertType.WARNING);
+					alerta.setTitle("Salespointfx2 Warning");
+					alerta.setHeaderText("Al parecer es null el mocimiento de caja");
+					alerta.setContentText("");
+					alerta.showAndWait();
 					abiriCaja();
 					// Aquí puedes agregar la acción alternativa, por ejemplo:
 					// primaryStage.close(); o alguna otra lógica que desees.
@@ -111,7 +115,7 @@ public class SalesPointFx2Application extends Application {
 
 	public void abiriCaja() {
 		MovimientoCajaController mcc = context.getBean(MovimientoCajaController.class);
-		Parent abrirCaja = mcc.load(ss.getSucursalActive().get().getNombreSucursal(), "Cerrar Caja");
+		Parent abrirCaja = mcc.load(ss.getSucursalActive().get().getNombreSucursal(), "Abriri Caja");
 		Stage abrirCajaStage = new Stage();
 		abrirCajaStage.setScene(new Scene(abrirCaja, 600, 400));
 		abrirCajaStage.setResizable(false);
